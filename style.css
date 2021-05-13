@@ -58,7 +58,7 @@ h1,h2,h3 {
 
 /* structure */
 .container {
-	background: url(img/bgcontainer.gif) repeat-y;
+	
 	margin: 0 auto;
 	background-color:#B8FF33 ; 
 	padding-bottom: 6px;
