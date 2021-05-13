@@ -60,7 +60,7 @@ h1,h2,h3 {
 .container {
 	
 	margin: 0 auto;
-	background-color:#B8FF33 ; 
+
 	padding-bottom: 6px;
 	width: 767px;
 	border-bottom: 1px solid #DDD;
@@ -103,6 +103,7 @@ h1,h2,h3 {
 .main {
 	clear: both;
 	padding: 8px 18px;
+	background-color:#B8FF33 ; 
 }
 
 /* main left */
