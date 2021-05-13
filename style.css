@@ -60,7 +60,7 @@ h1,h2,h3 {
 .container {
 	background: url(img/bgcontainer.gif) repeat-y;
 	margin: 0 auto;
-	color:#B8FF33 ; 
+	background-color:#B8FF33 ; 
 	padding-bottom: 6px;
 	width: 767px;
 	border-bottom: 1px solid #DDD;
