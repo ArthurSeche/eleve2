@@ -29,11 +29,11 @@ input {
 	font: normal 1.1em "Lucida Sans Unicode",sans-serif;
 }
 p,cite,code,ul {
-	font-size: 1.2em;
+	font-size: 0.5em;
 	padding-bottom: 1.2em;
 }
 h1 {
-	font-size: 3em;
+	font-size: 3.5em;
 	margin-bottom: 4px;
 }
 code {
