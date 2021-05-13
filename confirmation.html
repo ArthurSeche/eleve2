@@ -1,6 +1,26 @@
 <!doctype html>
 <html lang="fr">
 <head>
+  <script>
+dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
+dataLayer.push({
+  'ecommerce': {
+    'currencyCode': 'EUR',                       // Local currency is optional.
+    'impressions': [
+     {
+       'name': 'Chaussures',       // Name or ID is required.
+       'id': '12345',
+       'price': '15.25',
+       'brand': 'Google',
+       'category': 'Apparel',
+       'variant': 'Gray',
+       'list': 'Search Results',
+       'position': 1
+     },
+     ]
+  }
+});
+</script>
   
   <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
