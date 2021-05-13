@@ -153,8 +153,9 @@ h1,h2,h3 {
 
 /* content */
 .content {
-	float: right;
-	width: 520px;
+	float: left;
+	width: 720px;
+	background-color: #B8FF33; 
 }
 .content .item {
 	padding: 6px 12px;
