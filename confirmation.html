@@ -2,6 +2,32 @@
 <html lang="fr">
 <head>
 	<script>
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: "purchase",
+    ecommerce: {
+      transaction_id: "SRFC20250309",  // Remplace par un vrai ID dynamique
+      affiliation: "Boutique Officielle Stade Rennais",
+      value: 90.00,  // Prix total de la commande
+      currency: "EUR",
+      tax: 14.99,  // Exemple de TVA (ajuste selon ton taux réel)
+      shipping: 5.99,  // Frais de livraison (modifie si besoin)
+      coupon: "",  // Si un code promo est utilisé, mets-le ici
+      items: [
+        {
+          item_name: "Maillot Stade Rennais Domicile 2024/2025",
+          item_id: "SRFC-MA-2025",
+          price: 90.00,
+          quantity: 1,
+          item_category: "Maillots",
+          item_brand: "Puma",
+          item_variant: "M",  // Ajuste selon la taille choisie
+        }
+      ]
+    }
+  });
+</script>
+	<script>
 window.dataLayer = window.dataLayer || [];
 window.dataLayer.push({
   'event': 'pageType',
