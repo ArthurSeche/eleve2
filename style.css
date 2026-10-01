@@ -412,3 +412,21 @@ th { font-weight: 600; background: var(--soft); }
   .product-card .info { padding: 10px 12px 14px; }
   .product-card .name { font-size: .9rem; }
 }
+
+/* ---------- Choix du conteneur GTM ---------- */
+.gtm-config-card { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: center; margin-top: 22px; padding: 22px; border: 2px solid var(--black); border-radius: var(--radius); background: #fff; }
+.gtm-config-card h3 { font-size: 1.5rem; margin: 2px 0 6px; }
+.gtm-form { padding: 0; }
+.gtm-form p { margin: 0; }
+.gtm-row { display: flex; gap: 8px; margin: 8px 0; }
+.gtm-row input { text-transform: uppercase; font-family: var(--mono); }
+.gtm-status { font-weight: 600; font-size: .92rem; }
+.gtm-actions { font-size: .85rem; color: var(--muted); }
+.gtm-actions .link-btn { font-size: .85rem; }
+.gtm-error { color: var(--red); font-size: .85rem; min-height: 1.2em; }
+.gtm-form.dark .gtm-status { color: #9FE3B4; font-weight: 400; }
+.gtm-form.dark .gtm-row input { background: #222; border-color: #3A3A3E; color: #fff; padding: 6px 10px; font-size: .8rem; }
+.gtm-form.dark .gtm-actions, .gtm-form.dark .link-btn { color: #AAA; font-size: .74rem; }
+.gtm-form.dark .btn-small { padding: 6px 12px; font-size: .78rem; }
+.dl-gtm { border-bottom: 1px solid #2A2A2E; padding-bottom: 8px; margin-bottom: 4px; }
+@media (max-width: 760px) { .gtm-config-card { grid-template-columns: 1fr; } }

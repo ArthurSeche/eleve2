@@ -128,13 +128,32 @@
     return d;
   }
 
-  /* Appelle le crochet s'il a été défini par l'élève (ou par le corrigé). */
+  /* Appelle le crochet s'il a été défini par l'élève (ou par le corrigé).
+     Si le crochet n'existe pas encore (par exemple s'il est défini dans une
+     balise HTML personnalisée GTM, qui se charge après la page), l'appel est
+     mis de côté puis rejoué dès que le crochet apparaît (pendant 30 s). */
+  var pendingHooks = {};
+  function runHook(name, h, data) {
+    try { h(copy(data)); } catch (e) { console.error("[shopHooks." + name + "] erreur dans votre code :", e); }
+  }
   function hook(name, data) {
     var h = window.shopHooks && window.shopHooks[name];
-    if (typeof h === "function") {
-      try { h(copy(data)); } catch (e) { console.error("[shopHooks." + name + "] erreur dans votre code :", e); }
-    }
+    if (typeof h === "function") runHook(name, h, data);
+    else (pendingHooks[name] = pendingHooks[name] || []).push(copy(data));
   }
+  function flushHooks() {
+    var hs = window.shopHooks || {};
+    Object.keys(pendingHooks).forEach(function (k) {
+      if (typeof hs[k] === "function") {
+        var queue = pendingHooks[k]; delete pendingHooks[k];
+        queue.forEach(function (d) { runHook(k, hs[k], d); });
+      }
+    });
+  }
+  (function watchHooks() {
+    var started = Date.now();
+    var t = setInterval(function () { flushHooks(); if (Date.now() - started > 30000) clearInterval(t); }, 250);
+  })();
 
   function toast(msg) {
     var t = $(".toast");
@@ -670,6 +689,45 @@
   }
 
   /* ------------------------------------------------------------------
+     CHOIX DU CONTENEUR GTM (voir gtm-install.js)
+     ------------------------------------------------------------------ */
+  function gtmStatusText() {
+    var g = window.KOP_GTM;
+    if (!g) return "gtm-install.js n'est pas chargé sur cette page";
+    if (!g.id) return "Aucun conteneur GTM chargé (mode « sans GTM »)";
+    return "Conteneur actif : " + g.id + (g.source === "défaut" ? " (celui du formateur)" : " (le vôtre)");
+  }
+  function goWithGtm(value) {
+    var params = new URLSearchParams(location.search);
+    params.set("gtm", value);
+    location.search = params.toString();
+  }
+  function gtmForm(dark) {
+    var g = window.KOP_GTM || {};
+    var f = document.createElement("form");
+    f.className = "gtm-form" + (dark ? " dark" : "");
+    f.innerHTML = '<p class="gtm-status"></p>' +
+      '<div class="gtm-row"><label class="visually-hidden">ID du conteneur GTM</label>' +
+      '<input type="text" name="gtm" placeholder="GTM-XXXXXXX" autocomplete="off" spellcheck="false" value="' + (g.source === "élève" ? esc(g.id) : "") + '">' +
+      '<button type="submit" class="btn btn-primary btn-small">Utiliser</button></div>' +
+      '<p class="gtm-actions"><button type="button" class="link-btn" data-gtm="">Revenir au conteneur du formateur</button> · ' +
+      '<button type="button" class="link-btn" data-gtm="off">Charger la page sans GTM</button></p>' +
+      '<p class="gtm-error" role="alert"></p>';
+    $(".gtm-status", f).textContent = gtmStatusText();
+    f.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var v = f.elements.gtm.value.trim().toUpperCase();
+      if (!/^GTM-[A-Z0-9]{4,12}$/.test(v)) { $(".gtm-error", f).textContent = "Format attendu : GTM- suivi de lettres et chiffres (ex. GTM-ABC1234)."; return; }
+      goWithGtm(v);
+    });
+    $all("[data-gtm]", f).forEach(function (b) { b.addEventListener("click", function () { goWithGtm(b.getAttribute("data-gtm")); }); });
+    return f;
+  }
+  function initGtmConfig() {
+    $all(".gtm-config-slot").forEach(function (slot) { slot.appendChild(gtmForm(false)); });
+  }
+
+  /* ------------------------------------------------------------------
      PANNEAU "VOIR LE DATALAYER" (aide pédagogique)
      ------------------------------------------------------------------ */
   function initDataLayerViewer() {
@@ -678,8 +736,9 @@
     btn.className = "dl-toggle"; btn.type = "button"; btn.textContent = "{ } dataLayer";
     var panel = document.createElement("div");
     panel.className = "dl-panel";
-    panel.innerHTML = '<div class="dl-head"><span>window.dataLayer</span><button type="button">fermer</button></div><div class="dl-list"></div>';
+    panel.innerHTML = '<div class="dl-head"><span>window.dataLayer</span><button type="button">fermer</button></div><div class="dl-gtm"></div><div class="dl-list"></div>';
     document.body.appendChild(btn); document.body.appendChild(panel);
+    $(".dl-gtm", panel).appendChild(gtmForm(true));
     var list = $(".dl-list", panel), seen = 0;
     function fmt(o) {
       try {
@@ -708,7 +767,7 @@
      ------------------------------------------------------------------ */
   window.shop = {
     catalog: CATALOG, coupons: COUPONS, shipping: SHIPPING,
-    cart: getCart, totals: totals, product: null, order: null,
+    cart: getCart, totals: totals, product: null, order: null, flushHooks: flushHooks,
     reset: function () { ["kop_cart", "kop_coupon", "kop_wishlist", "kop_last_order"].forEach(function (k) { save(k, null); }); updateCartCount(); toast("Boutique réinitialisée"); }
   };
 
@@ -720,6 +779,7 @@
     initCheckout();
     initConfirmation();
     initNewsletter();
+    initGtmConfig();
     initDataLayerViewer();
     $all("[data-reset-shop]").forEach(function (b) { b.addEventListener("click", function (e) { e.preventDefault(); window.shop.reset(); }); });
   }
