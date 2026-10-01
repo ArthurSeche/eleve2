@@ -22,13 +22,14 @@ window.shopHooks = window.shopHooks || {};
 
 /* ---------- MODÈLE (exercice 1) : à décommenter et compléter ----------
 
-
-
------------------------------------------------------------------------- */
-
-
+shopHooks.viewItem = function (data) {
+  var p = data.product;
+  dataLayer.push({ ecommerce: null });
+  dataLayer.push({
+    event: "view_item",
 /* ---------- À VOUS : écrivez vos crochets ci-dessous ---------- */
 
+/* 1. Le dictionnaire : vocabulaire de la boutique → vocabulaire GA4 */
 function versItem(x) {
   return {
     item_id: x.sku,
@@ -41,11 +42,65 @@ function versItem(x) {
   };
 }
 
-// view_item
-items: [versItem(data.product)]
+/* 2. Vue d'un produit */
+shopHooks.viewItem = function (data) {
+  dataLayer.push({ ecommerce: null });
+  dataLayer.push({
+    event: "view_item",
+    ecommerce: {
+      currency: "EUR",
+      value: data.product.price,
+      items: [versItem(data.product)]
+    }
+  });
+};
 
-// begin_checkout, view_cart, add_shipping_info, add_payment_info
-items: data.lines.map(versItem)
+/* 3. Ajout au panier */
+shopHooks.addToCart = function (data) {
+  var item = versItem(data.product);
+  item.item_variant = data.size;      // la taille choisie
+  item.price = data.unitPrice;        // le prix, flocage compris
+  item.quantity = data.quantity;      // la quantité ajoutée
+  dataLayer.push({ ecommerce: null });
+  dataLayer.push({
+    event: "add_to_cart",
+    ecommerce: {
+      currency: "EUR",
+      value: data.value,
+      items: [item]
+    }
+  });
+};
 
-// purchase
-items: data.order.lines.map(versItem)
+/* 4. Début de commande */
+shopHooks.beginCheckout = function (data) {
+  dataLayer.push({ ecommerce: null });
+  dataLayer.push({
+    event: "begin_checkout",
+    ecommerce: {
+      currency: "EUR",
+      value: data.totals.subtotal - data.totals.discount,
+      coupon: data.totals.coupon || undefined,
+      items: data.lines.map(versItem)
+    }
+  });
+};
+
+/* 5. Achat */
+shopHooks.purchase = function (data) {
+  if (!data.firstView) return; // page rechargée : on n'envoie pas l'achat une 2e fois
+  var o = data.order;
+  dataLayer.push({ ecommerce: null });
+  dataLayer.push({
+    event: "purchase",
+    ecommerce: {
+      transaction_id: o.transaction_id,
+      currency: o.currency,
+      value: Math.round((o.total - o.shipping) * 100) / 100,
+      tax: o.tax,
+      shipping: o.shipping,
+      coupon: o.coupon || undefined,
+      items: o.lines.map(versItem)
+    }
+  });
+};
