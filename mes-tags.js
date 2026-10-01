@@ -145,27 +145,9 @@ shopHooks.couponApplied = function (data) {
   });
 };
 
+/* EXERCICES AUTONOMIE */
 
-
-/* Mission 1 — Guide des tailles (événement inventé) */
-shopHooks.sizeGuideOpen = function (data) {
-  dataLayer.push({
-    event: "size_guide_open",
-    product_id: data.product.sku,
-    product_name: data.product.name
-  });
-};
-
-/* Mission 2 — Newsletter (événement GA4 recommandé) */
-shopHooks.newsletterSignup = function (data) {
-  // ⚠️ on n'envoie JAMAIS data.email : donnée personnelle
-  dataLayer.push({
-    event: "generate_lead",
-    lead_source: "newsletter_" + data.location
-  });
-};
-
-/* Mission 3 — Retrait du panier (e-commerce standard) */
+/* Mission 1 — Retrait du panier (événement GA4 standard) */
 shopHooks.removeFromCart = function (data) {
   var item = versItem(data.line);
   item.quantity = data.quantity;   // la quantité réellement retirée
@@ -177,5 +159,29 @@ shopHooks.removeFromCart = function (data) {
       value: data.value,
       items: [item]
     }
+  });
+};
+
+/* Mission 2 — Ajout aux favoris (événement GA4 standard) */
+shopHooks.addToWishlist = function (data) {
+  var item = versItem(data.product);
+  if (data.size) item.item_variant = data.size;   // la taille, si elle a été choisie
+  dataLayer.push({ ecommerce: null });
+  dataLayer.push({
+    event: "add_to_wishlist",
+    ecommerce: {
+      currency: "EUR",
+      value: data.product.price,
+      items: [item]
+    }
+  });
+};
+
+/* Mission 3 — Guide des tailles (événement inventé) */
+shopHooks.sizeGuideOpen = function (data) {
+  dataLayer.push({
+    event: "size_guide_open",
+    product_id: data.product.sku,
+    product_name: data.product.name
   });
 };
