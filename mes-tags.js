@@ -144,3 +144,38 @@ shopHooks.couponApplied = function (data) {
     coupon_valid: data.valid ? "oui" : "non"
   });
 };
+
+
+
+/* Mission 1 — Guide des tailles (événement inventé) */
+shopHooks.sizeGuideOpen = function (data) {
+  dataLayer.push({
+    event: "size_guide_open",
+    product_id: data.product.sku,
+    product_name: data.product.name
+  });
+};
+
+/* Mission 2 — Newsletter (événement GA4 recommandé) */
+shopHooks.newsletterSignup = function (data) {
+  // ⚠️ on n'envoie JAMAIS data.email : donnée personnelle
+  dataLayer.push({
+    event: "generate_lead",
+    lead_source: "newsletter_" + data.location
+  });
+};
+
+/* Mission 3 — Retrait du panier (e-commerce standard) */
+shopHooks.removeFromCart = function (data) {
+  var item = versItem(data.line);
+  item.quantity = data.quantity;   // la quantité réellement retirée
+  dataLayer.push({ ecommerce: null });
+  dataLayer.push({
+    event: "remove_from_cart",
+    ecommerce: {
+      currency: "EUR",
+      value: data.value,
+      items: [item]
+    }
+  });
+};
