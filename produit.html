@@ -1,49 +1,235 @@
-ge<!doctype html>
+<!doctype html>
 <html lang="fr">
 <head>
-
-<script>
-window.dataLayer = window.dataLayer || [];
-window.dataLayer.push({
-'event': 'page_category',
-'pagecategory': 'produit'
-});
-</script>
-	
-	<!-- Google Tag Manager -->
+<meta charset="utf-8">
+<!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-5RD2JFD7');</script>
+})(window,document,'script','dataLayer','GTM-TN8FV9WX');</script>
 <!-- End Google Tag Manager -->
-	<meta charset="utf-8">
-  <title>La page produit </title>
-	<meta name="description" content="Ceci est la page de confirmation de paiement"> 
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js"></script>
-<body>
-	<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5RD2JFD7"
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page produit</title>
+<meta name="description" content="Ceci est la page produit">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="shop.js" defer></script>
+</head>
+
+<body data-page="product">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TN8FV9WX"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
- <div class="container">
-    <div class="main">
-      <div class="header">
-      </div>
-      <div class="content">
-<h1> Maillot Domicile stade rennais <h1>
 
-  <p>Prix : 90€ <br>
-  marque : Puma <br>
-  Taille : M </p> 
-  
-  <img src="maillotrennesdomicile.JPG" />
-  <p><a href="https://arthurseche.github.io/eleve2/confirmation.html"  >Achetez ce produit </a><p>
-    <p><a href="https://arthurseche.github.io/eleve2/hello.html"> homepage </a> <p> 
-       
-  <div class="footer">
+<div class="topbar">Site d'entraînement Google Tag Manager — <strong>aucune commande réelle</strong> · Livraison offerte dès 60 € (pour de faux)</div>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="hello.html" class="logo"><span class="logo-mark"></span>Kop Store</a>
+    <nav class="main-nav" aria-label="Navigation principale">
+        <a href="hello.html">Accueil</a>
+        <a href="boutique.html">Boutique</a>
+        <a href="produit.html" class="active">Maillot 2026</a>
+        <a href="hello.html#formation">Formation GTM</a>
+        <a href="contact.html">Nous contacter</a>
+    </nav>
+    <div class="header-actions">
+      <a href="panier.html" class="cart-link" id="header-cart">Panier <span class="cart-count" data-count="0">0</span></a>
+    </div>
   </div>
-  </div> 
+</header>
+
+<main>
+<div class="wrap">
+  <nav class="breadcrumb" aria-label="Fil d'Ariane">
+    <a href="hello.html">Accueil</a><span>/</span><a href="boutique.html" id="breadcrumb-category">Maillots</a><span>/</span><span id="breadcrumb-name" style="margin:0">Maillot Domicile Stade Rennais</span>
+  </nav>
+
+  <!-- Les attributs data-* ci-dessous peuvent être lus par une variable GTM "Élément DOM" -->
+  <div class="product-page" id="product"
+       data-id="maillot-domicile" data-sku="SRFC-DOM-26" data-name="Maillot Domicile Stade Rennais"
+       data-brand="Puma" data-category="Maillots" data-price="90">
+
+    <div class="gallery">
+      <div class="gallery-thumbs" id="gallery-thumbs">
+        <button type="button" class="active" data-src="img/maillot-domicile.jpg" aria-label="Vue de face"><img src="img/maillot-domicile.jpg" alt=""></button>
+        <button type="button" data-src="img/maillot-domicile-face.jpg" aria-label="Détail sponsor"><img src="img/maillot-domicile-face.jpg" alt=""></button>
+        <button type="button" data-src="img/maillot-domicile-ecusson.jpg" aria-label="Détail écusson"><img src="img/maillot-domicile-ecusson.jpg" alt=""></button>
+        <button type="button" data-src="img/maillot-domicile-tissu.jpg" aria-label="Détail tissu"><img src="img/maillot-domicile-tissu.jpg" alt=""></button>
+      </div>
+      <div class="gallery-main">
+        <span class="pill pill-red" id="product-badge">Nouveau</span>
+        <img id="gallery-main-img" src="img/maillot-domicile.jpg" alt="Maillot Domicile Stade Rennais">
+      </div>
+    </div>
+
+    <div class="product-info">
+      <div class="brand-line">
+        <span class="brand" id="product-brand">Puma</span>
+        <a href="#avis" class="rating"><span class="stars" aria-hidden="true">★★★★★</span><span><span id="product-rating-value">4,6</span> (<span id="product-rating-count">128</span> avis)</span></a>
+      </div>
+      <h1 id="product-name">Maillot Domicile Stade Rennais</h1>
+      <p class="product-short" id="product-short">Le maillot officiel domicile, version replica. Coupe régulière, tissu respirant dryCELL et motif ton sur ton inspiré de la mosaïque.</p>
+
+      <div class="product-price" id="product-price">90,00 €</div>
+      <div class="tax-note">TVA incluse · Livraison offerte dès 60 €</div>
+
+      <div class="option-block">
+        <div class="option-head">
+          <strong>Taille : <span class="selected-value" id="selected-size">Choisissez une taille</span></strong>
+          <button type="button" class="link-btn" id="size-guide-btn">Guide des tailles</button>
+        </div>
+        <div class="size-list" id="size-list">
+          <button type="button" class="size-btn" data-size="S">S</button>
+          <button type="button" class="size-btn" data-size="M">M</button>
+          <button type="button" class="size-btn" data-size="L">L</button>
+          <button type="button" class="size-btn" data-size="XL">XL</button>
+          <button type="button" class="size-btn" data-size="XXL" disabled>XXL</button>
+        </div>
+        <p class="size-error" role="alert">Veuillez choisir une taille avant d'ajouter au panier.</p>
+      </div>
+
+      <div class="option-block flocage" id="flocage">
+        <label><input type="checkbox" id="flocage-check"> Ajouter un flocage nom + numéro <strong>(+15 €)</strong></label>
+        <div class="flocage-fields">
+          <input type="text" id="flocage-name" maxlength="12" placeholder="Nom (ex. MARTIN)" aria-label="Nom à floquer">
+          <input type="number" id="flocage-number" min="1" max="99" placeholder="N°" aria-label="Numéro à floquer">
+        </div>
+      </div>
+
+      <div class="buy-row">
+        <div class="qty">
+          <button type="button" id="qty-minus" aria-label="Diminuer la quantité">−</button>
+          <input type="number" id="qty-input" value="1" min="1" max="10" aria-label="Quantité">
+          <button type="button" id="qty-plus" aria-label="Augmenter la quantité">+</button>
+        </div>
+        <button type="button" class="btn btn-primary btn-add-to-cart" id="add-to-cart" data-selected-size="">Ajouter au panier</button>
+        <button type="button" class="wishlist-btn" id="wishlist-btn" aria-label="Ajouter aux favoris" aria-pressed="false">♡</button>
+      </div>
+      <a href="./confirmation.html" class="btn btn-outline btn-block buy-now" id="buy-now">Achetez ce produit</a>
+
+      <p class="stock" id="stock-info">En stock — expédié sous 24 h</p>
+
+      <div class="reassurance">
+        <div><b>Livraison 24 h</b>en express</div>
+        <div><b>Retour gratuit</b>sous 30 jours</div>
+        <div><b>Paiement sécurisé</b>CB · PayPal</div>
+      </div>
+
+      <div class="accordion">
+        <details open>
+          <summary>Description</summary>
+          <div class="acc-body">
+            <p>Porté par les joueurs lors des matchs à domicile, ce maillot replica reprend le rouge historique du club avec un col en V noir et un motif mosaïque ton sur ton.</p>
+            <ul><li>Coupe régulière (Regular fit)</li><li>Technologie dryCELL qui évacue la transpiration</li><li>Écusson tissé, logo sponsor thermocollé</li></ul>
+          </div>
+        </details>
+        <details>
+          <summary>Composition et entretien</summary>
+          <div class="acc-body"><p>100 % polyester recyclé. Lavage en machine à 30 °C, à l'envers. Ne pas repasser le flocage. Pas de sèche-linge.</p></div>
+        </details>
+        <details>
+          <summary>Livraison et retours</summary>
+          <div class="acc-body"><p>Standard 3-5 jours (offerte dès 60 €), express 24 h (9,90 €), point relais 4-6 jours. Retour gratuit sous 30 jours, sauf articles floqués.</p></div>
+        </details>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="section" id="avis" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <h2>Avis clients</h2>
+    <div class="reviews">
+      <div class="review-score">
+        <div class="big js-review-avg">4,6</div>
+        <div class="stars">★★★★★</div>
+        <div class="note"><span class="js-review-count">128</span> avis vérifiés</div>
+        <div class="bars">
+          <div>5★<i><b style="width:72%"></b></i>72 %</div>
+          <div>4★<i><b style="width:18%"></b></i>18 %</div>
+          <div>3★<i><b style="width:6%"></b></i>6 %</div>
+          <div>2★<i><b style="width:3%"></b></i>3 %</div>
+          <div>1★<i><b style="width:1%"></b></i>1 %</div>
+        </div>
+      </div>
+      <div>
+        <article class="review"><header><strong>Julien R. <span class="stars">★★★★★</span></strong><span class="verified">✓ Achat vérifié · M</span></header><p>Taille normalement, tissu très agréable. Reçu en 48 h avec le flocage, rien à redire.</p></article>
+        <article class="review"><header><strong>Sarah L. <span class="stars">★★★★☆</span></strong><span class="verified">✓ Achat vérifié · S</span></header><p>Superbe couleur. Un poil long au niveau du buste pour moi, mais je le garde !</p></article>
+        <article class="review"><header><strong>Thomas B. <span class="stars">★★★★★</span></strong><span class="verified">✓ Achat vérifié · L</span></header><p>Acheté pour le tracking GA4 de ma formation, finalement je le porte au stade.</p></article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head"><div><span class="eyebrow">Complétez la tenue</span><h2>Vous aimerez aussi</h2></div></div>
+    <div class="product-grid" id="related-products"></div>
+  </div>
+</section>
+
+<dialog class="modal" id="size-guide" aria-labelledby="size-guide-title">
+  <div class="modal-inner">
+    <button type="button" class="btn btn-ghost modal-close" data-close-dialog aria-label="Fermer">✕</button>
+    <h2 id="size-guide-title">Guide des tailles</h2>
+    <p class="note">Mesures du corps, en centimètres.</p>
+    <table>
+      <thead><tr><th>Taille</th><th>Tour de poitrine</th><th>Tour de taille</th><th>Hauteur</th></tr></thead>
+      <tbody>
+        <tr><td>S</td><td>88 – 96</td><td>76 – 84</td><td>165 – 172</td></tr>
+        <tr><td>M</td><td>96 – 104</td><td>84 – 92</td><td>172 – 178</td></tr>
+        <tr><td>L</td><td>104 – 112</td><td>92 – 100</td><td>178 – 184</td></tr>
+        <tr><td>XL</td><td>112 – 124</td><td>100 – 112</td><td>184 – 190</td></tr>
+        <tr><td>XXL</td><td>124 – 136</td><td>112 – 124</td><td>190 – 196</td></tr>
+      </tbody>
+    </table>
+    <p class="note" style="margin-top:14px">Entre deux tailles ? Prenez la plus grande.</p>
+  </div>
+</dialog>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <a href="hello.html" class="logo"><span class="logo-mark"></span>Kop Store</a>
+        <p>Boutique fictive créée pour apprendre Google Tag Manager et GA4. Tout fonctionne comme sur un vrai site… sauf le paiement.</p>
+      </div>
+      <div>
+        <h4>Boutique</h4>
+        <a href="boutique.html">Tous les produits</a>
+        <a href="produit.html">Maillot domicile 2026</a>
+        <a href="panier.html">Mon panier</a>
+      </div>
+      <div>
+        <h4>Formation</h4>
+        <a href="exercice1.html">Exercices — série 1</a>
+        <a href="exercice2.html">Exercices — série 2</a>
+        <a href="exercice3.html">Exercices — e-commerce</a>
+        <a href="examen.html">Examen final</a>
+      </div>
+      <div>
+        <h4>Newsletter</h4>
+        <form class="newsletter-form" id="newsletter-form">
+          <label for="newsletter-email" class="visually-hidden">Adresse e-mail</label>
+          <input type="email" id="newsletter-email" name="email" placeholder="votre@email.fr" required>
+          <button type="submit" class="btn btn-primary">OK</button>
+        </form>
+        <p class="newsletter-msg" aria-live="polite"></p>
+      </div>
+    </div>
+    <div class="legal">
+      <span>© Kop Store — site pédagogique, aucune vente réelle.</span>
+      <a href="#" data-reset-shop>Réinitialiser la boutique (panier, favoris, commande)</a>
+    </div>
+  </div>
+</footer>
+
+<script src="mes-tags.js"></script>
 </body>
 </html>

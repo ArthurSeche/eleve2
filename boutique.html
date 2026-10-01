@@ -10,8 +10,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-TN8FV9WX');</script>
 <!-- End Google Tag Manager -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Confirmation de paiement</title>
-<meta name="description" content="Ceci est la page de confirmation de paiement">
+<title>Boutique | Kop Store</title>
+<meta name="description" content="Tous les produits de la boutique Kop Store">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script src="shop.js" defer></script>
 </head>
 
-<body data-page="confirmation">
+<body data-page="shop">
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TN8FV9WX"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -32,7 +32,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <a href="hello.html" class="logo"><span class="logo-mark"></span>Kop Store</a>
     <nav class="main-nav" aria-label="Navigation principale">
         <a href="hello.html">Accueil</a>
-        <a href="boutique.html">Boutique</a>
+        <a href="boutique.html" class="active">Boutique</a>
         <a href="produit.html">Maillot 2026</a>
         <a href="hello.html#formation">Formation GTM</a>
         <a href="contact.html">Nous contacter</a>
@@ -45,29 +45,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <main>
 <div class="wrap">
-  <ol class="steps"><li class="done">Panier</li><li class="done">Livraison</li><li class="done">Paiement</li><li class="current">Confirmation</li></ol>
-  <div class="confirm-hero">
-    <div class="check" aria-hidden="true">✓</div>
-    <h1>Merci pour votre achat<span id="confirm-name"></span> !</h1>
-    <p class="lead" style="margin:10px auto 0">Commande <span class="order-id" id="order-id"></span> confirmée. Un e-mail (imaginaire) vient de partir.</p>
+  <nav class="breadcrumb" aria-label="Fil d'Ariane"><a href="hello.html">Accueil</a><span>/</span>Boutique</nav>
+  <div class="section-head" style="margin-bottom:18px">
+    <div><h1>La boutique</h1><p class="lead" style="margin:6px 0 0">Maillots, sweats et accessoires pour le virage.</p></div>
   </div>
-  <div class="order-box" id="order-box">
-    <p class="hint" id="reload-warning" hidden>⚠️ Vous avez déjà affiché cette page de confirmation pour cette commande. Votre balise <code>purchase</code> s'est-elle déclenchée une deuxième fois ?</p>
-    <p class="hint" id="demo-note" hidden>Vous êtes arrivé·e directement ici : une commande de démonstration a été créée.</p>
-    <table>
-      <thead><tr><th>Article</th><th>Qté</th><th>Montant</th></tr></thead>
-      <tbody id="order-lines"></tbody>
-    </table>
-    <div class="summary" style="position:static;border:0;padding:14px 0 0">
-      <div class="row"><span>Sous-total</span><span id="order-subtotal"></span></div>
-      <div class="row discount" id="order-discount-row" hidden><span>Réduction</span><span id="order-discount"></span></div>
-      <div class="row"><span>Livraison</span><span id="order-shipping"></span></div>
-      <div class="row"><span>Paiement</span><span id="order-payment"></span></div>
-      <div class="row total"><span>Total TTC</span><span id="order-total"></span></div>
-      <div class="row note"><span>dont TVA (20 %)</span><span id="order-tax"></span></div>
-    </div>
+  <div class="filters" role="group" aria-label="Filtrer par catégorie">
+    <button type="button" class="filter-btn active" data-filter="all">Tout</button>
+    <button type="button" class="filter-btn" data-filter="Maillots">Maillots</button>
+    <button type="button" class="filter-btn" data-filter="Shorts">Shorts</button>
+    <button type="button" class="filter-btn" data-filter="Sweats">Sweats</button>
+    <button type="button" class="filter-btn" data-filter="Accessoires">Accessoires</button>
   </div>
-  <p style="text-align:center">A très vite sur notre site ! <a href="./hello.html">homepage</a></p>
+  <div class="product-grid" id="shop-grid"></div>
 </div>
 </main>
 

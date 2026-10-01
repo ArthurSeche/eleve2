@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect width="400" height="400" fill="#F2F0ED"/><circle cx="200" cy="200" r="130" fill="#FFF" stroke="#1A1A1A" stroke-width="4"/>
+<polygon points="200,150 243,181 227,232 173,232 157,181" fill="#D7141A"/>
+<g stroke="#1A1A1A" stroke-width="4" fill="none"><path d="M200 150 V78 M243 181 L312 158 M227 232 L270 292 M173 232 L130 292 M157 181 L88 158"/></g>
+<path d="M200 78 L150 80 M200 78 L250 80 M312 158 L325 205 M312 158 L290 110 M270 292 L230 325 M270 292 L310 262 M130 292 L170 325 M130 292 L90 262 M88 158 L75 205 M88 158 L110 110" stroke="#1A1A1A" stroke-width="4"/>
+<ellipse cx="200" cy="350" rx="90" ry="10" fill="#000" opacity=".08"/></svg>

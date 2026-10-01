@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TN8FV9WX');</script>
+<!-- End Google Tag Manager -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Commande | Kop Store</title>
+<meta name="description" content="Tunnel de commande Kop Store">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="shop.js" defer></script>
+</head>
+
+<body data-page="checkout">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TN8FV9WX"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<div class="topbar">Site d'entraînement Google Tag Manager — <strong>aucune commande réelle</strong> · Livraison offerte dès 60 € (pour de faux)</div>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="hello.html" class="logo"><span class="logo-mark"></span>Kop Store</a>
+    <nav class="main-nav" aria-label="Navigation principale">
+        <a href="hello.html">Accueil</a>
+        <a href="boutique.html">Boutique</a>
+        <a href="produit.html">Maillot 2026</a>
+        <a href="hello.html#formation">Formation GTM</a>
+        <a href="contact.html">Nous contacter</a>
+    </nav>
+    <div class="header-actions">
+      <a href="panier.html" class="cart-link" id="header-cart">Panier <span class="cart-count" data-count="0">0</span></a>
+    </div>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+  <nav class="breadcrumb" aria-label="Fil d'Ariane"><a href="hello.html">Accueil</a><span>/</span><a href="panier.html">Panier</a><span>/</span>Commande</nav>
+  <ol class="steps" id="steps"><li class="done">Panier</li><li class="current">Livraison</li><li>Paiement</li><li>Confirmation</li></ol>
+  <div class="cart-layout" id="checkout-layout">
+    <form id="checkout" class="checkout-form" novalidate>
+
+      <section class="checkout-step" id="step-shipping">
+        <fieldset>
+          <legend>1. Livraison</legend>
+          <div class="step-summary"><span id="shipping-summary-text"></span><button type="button" class="link-btn" id="edit-shipping">Modifier</button></div>
+          <div class="step-body">
+            <p class="fake-notice">Formulaire d'exercice : n'entrez pas vos vraies coordonnées. <button type="button" class="link-btn" id="fill-test-data">Remplir avec des données de test</button></p>
+            <div class="form-row"><label for="co-email">E-mail *</label><input type="email" id="co-email" name="email" required></div>
+            <div class="form-grid">
+              <div class="form-row"><label for="co-firstname">Prénom *</label><input type="text" id="co-firstname" name="firstname" required></div>
+              <div class="form-row"><label for="co-lastname">Nom *</label><input type="text" id="co-lastname" name="lastname" required></div>
+            </div>
+            <div class="form-row"><label for="co-address">Adresse *</label><input type="text" id="co-address" name="address" required></div>
+            <div class="form-grid">
+              <div class="form-row"><label for="co-zip">Code postal *</label><input type="text" id="co-zip" name="zip" required></div>
+              <div class="form-row"><label for="co-city">Ville *</label><input type="text" id="co-city" name="city" required></div>
+            </div>
+            <div class="form-row"><label for="co-phone">Téléphone</label><input type="tel" id="co-phone" name="phone"></div>
+
+            <h3 style="margin-top:10px">Mode de livraison</h3>
+            <label class="radio-card"><input type="radio" name="shipping" value="standard" checked><span>Standard<small>3 à 5 jours ouvrés</small></span><strong data-ship-price="standard"></strong></label>
+            <label class="radio-card"><input type="radio" name="shipping" value="relais"><span>Point relais<small>4 à 6 jours ouvrés</small></span><strong data-ship-price="relais"></strong></label>
+            <label class="radio-card"><input type="radio" name="shipping" value="express"><span>Express<small>Livré demain avant 13 h</small></span><strong data-ship-price="express"></strong></label>
+            <button type="button" class="btn btn-primary btn-block" id="to-payment" style="margin:8px 0 14px">Continuer vers le paiement</button>
+          </div>
+        </fieldset>
+      </section>
+
+      <section class="checkout-step locked" id="step-payment">
+        <fieldset>
+          <legend>2. Paiement</legend>
+          <div class="step-body">
+            <p class="fake-notice">Paiement fictif : aucune donnée bancaire n'est demandée ni débitée.</p>
+            <label class="radio-card"><input type="radio" name="payment" value="Carte bancaire" checked><span>Carte bancaire<small>Visa, Mastercard, CB</small></span></label>
+            <label class="radio-card"><input type="radio" name="payment" value="PayPal"><span>PayPal<small>Payer avec votre compte PayPal</small></span></label>
+            <label class="radio-card"><input type="radio" name="payment" value="Apple Pay"><span>Apple Pay<small>Paiement en un geste</small></span></label>
+            <label style="display:flex;gap:10px;align-items:center;margin:12px 0 16px"><input type="checkbox" name="cgv" required style="width:18px;height:18px;accent-color:var(--red)"> J'accepte les conditions générales de vente (fictives)</label>
+            <button type="submit" class="btn btn-primary btn-block" id="pay-btn" style="margin-bottom:14px">Payer <span id="pay-amount"></span></button>
+          </div>
+        </fieldset>
+      </section>
+    </form>
+
+    <aside class="summary">
+      <h2>Votre commande</h2>
+      <div id="co-lines"></div>
+      <div class="row" style="border-top:1px solid var(--line);margin-top:6px;padding-top:12px"><span>Sous-total</span><span id="co-subtotal"></span></div>
+      <div class="row discount" id="co-discount-row" hidden><span>Réduction</span><span id="co-discount"></span></div>
+      <div class="row"><span>Livraison</span><span id="co-shipping"></span></div>
+      <div class="row total"><span>Total TTC</span><span id="co-total"></span></div>
+    </aside>
+  </div>
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <a href="hello.html" class="logo"><span class="logo-mark"></span>Kop Store</a>
+        <p>Boutique fictive créée pour apprendre Google Tag Manager et GA4. Tout fonctionne comme sur un vrai site… sauf le paiement.</p>
+      </div>
+      <div>
+        <h4>Boutique</h4>
+        <a href="boutique.html">Tous les produits</a>
+        <a href="produit.html">Maillot domicile 2026</a>
+        <a href="panier.html">Mon panier</a>
+      </div>
+      <div>
+        <h4>Formation</h4>
+        <a href="exercice1.html">Exercices — série 1</a>
+        <a href="exercice2.html">Exercices — série 2</a>
+        <a href="exercice3.html">Exercices — e-commerce</a>
+        <a href="examen.html">Examen final</a>
+      </div>
+      <div>
+        <h4>Newsletter</h4>
+        <form class="newsletter-form" id="newsletter-form">
+          <label for="newsletter-email" class="visually-hidden">Adresse e-mail</label>
+          <input type="email" id="newsletter-email" name="email" placeholder="votre@email.fr" required>
+          <button type="submit" class="btn btn-primary">OK</button>
+        </form>
+        <p class="newsletter-msg" aria-live="polite"></p>
+      </div>
+    </div>
+    <div class="legal">
+      <span>© Kop Store — site pédagogique, aucune vente réelle.</span>
+      <a href="#" data-reset-shop>Réinitialiser la boutique (panier, favoris, commande)</a>
+    </div>
+  </div>
+</footer>
+
+<script src="mes-tags.js"></script>
+</body>
+</html>

@@ -10,8 +10,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-TN8FV9WX');</script>
 <!-- End Google Tag Manager -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Confirmation de paiement</title>
-<meta name="description" content="Ceci est la page de confirmation de paiement">
+<title>Mon panier | Kop Store</title>
+<meta name="description" content="Votre panier Kop Store">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script src="shop.js" defer></script>
 </head>
 
-<body data-page="confirmation">
+<body data-page="cart">
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TN8FV9WX"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -45,29 +45,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <main>
 <div class="wrap">
-  <ol class="steps"><li class="done">Panier</li><li class="done">Livraison</li><li class="done">Paiement</li><li class="current">Confirmation</li></ol>
-  <div class="confirm-hero">
-    <div class="check" aria-hidden="true">✓</div>
-    <h1>Merci pour votre achat<span id="confirm-name"></span> !</h1>
-    <p class="lead" style="margin:10px auto 0">Commande <span class="order-id" id="order-id"></span> confirmée. Un e-mail (imaginaire) vient de partir.</p>
+  <nav class="breadcrumb" aria-label="Fil d'Ariane"><a href="hello.html">Accueil</a><span>/</span>Panier</nav>
+  <ol class="steps" id="steps"><li class="current">Panier</li><li>Livraison</li><li>Paiement</li><li>Confirmation</li></ol>
+  <h1 style="margin-bottom:22px">Mon panier</h1>
+  <div class="cart-layout" id="cart-layout">
+    <div id="cart-lines"></div>
+    <aside class="summary">
+      <h2>Récapitulatif</h2>
+      <div id="free-ship"></div>
+      <div class="row"><span>Sous-total</span><span id="summary-subtotal">0,00 €</span></div>
+      <div class="row discount" id="summary-discount-row" hidden><span>Réduction <span id="summary-coupon-code"></span></span><span id="summary-discount"></span></div>
+      <div class="row"><span>Livraison standard</span><span id="summary-shipping">—</span></div>
+      <div class="row total"><span>Total TTC</span><span id="summary-total">0,00 €</span></div>
+      <form class="coupon" id="coupon-form">
+        <label for="coupon-input" class="visually-hidden">Code promo</label>
+        <input type="text" id="coupon-input" placeholder="Code promo">
+        <button type="submit" class="btn btn-outline btn-small" id="coupon-apply">Appliquer</button>
+      </form>
+      <p class="coupon-msg" id="coupon-msg" aria-live="polite"></p>
+      <a href="commande.html" class="btn btn-primary btn-block" id="checkout-btn">Passer la commande</a>
+      <p class="note" style="margin:12px 0 0;text-align:center">Codes de test : <code>GTM10</code> ou <code>ROUGE5</code></p>
+    </aside>
   </div>
-  <div class="order-box" id="order-box">
-    <p class="hint" id="reload-warning" hidden>⚠️ Vous avez déjà affiché cette page de confirmation pour cette commande. Votre balise <code>purchase</code> s'est-elle déclenchée une deuxième fois ?</p>
-    <p class="hint" id="demo-note" hidden>Vous êtes arrivé·e directement ici : une commande de démonstration a été créée.</p>
-    <table>
-      <thead><tr><th>Article</th><th>Qté</th><th>Montant</th></tr></thead>
-      <tbody id="order-lines"></tbody>
-    </table>
-    <div class="summary" style="position:static;border:0;padding:14px 0 0">
-      <div class="row"><span>Sous-total</span><span id="order-subtotal"></span></div>
-      <div class="row discount" id="order-discount-row" hidden><span>Réduction</span><span id="order-discount"></span></div>
-      <div class="row"><span>Livraison</span><span id="order-shipping"></span></div>
-      <div class="row"><span>Paiement</span><span id="order-payment"></span></div>
-      <div class="row total"><span>Total TTC</span><span id="order-total"></span></div>
-      <div class="row note"><span>dont TVA (20 %)</span><span id="order-tax"></span></div>
-    </div>
-  </div>
-  <p style="text-align:center">A très vite sur notre site ! <a href="./hello.html">homepage</a></p>
 </div>
 </main>
 

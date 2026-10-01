@@ -1,48 +1,96 @@
 <!doctype html>
 <html lang="fr">
 <head>
-
-<script>
-window.dataLayer = window.dataLayer || [];
-window.dataLayer.push({
-'event': 'page_category',
-'pagecategory': 'contact'
-});
-</script>
-  
+<meta charset="utf-8">
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-5RD2JFD7');</script>
+})(window,document,'script','dataLayer','GTM-TN8FV9WX');</script>
 <!-- End Google Tag Manager -->
-  <meta charset="utf-8">
-  <title>Contact</title>
-  <meta name="description" content="Ceci est la page de contact"> 
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact</title>
+<meta name="description" content="Ceci est la page de contact">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="shop.js" defer></script>
 </head>
-<body>
+
+<body data-page="contact">
 <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5RD2JFD7"
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TN8FV9WX"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
-    <div class="main">
-      <div class="header">
+
+<div class="topbar">Site d'entraînement Google Tag Manager — <strong>aucune commande réelle</strong> · Livraison offerte dès 60 € (pour de faux)</div>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="hello.html" class="logo"><span class="logo-mark"></span>Kop Store</a>
+    <nav class="main-nav" aria-label="Navigation principale">
+        <a href="hello.html">Accueil</a>
+        <a href="boutique.html">Boutique</a>
+        <a href="produit.html">Maillot 2026</a>
+        <a href="hello.html#formation">Formation GTM</a>
+        <a href="contact.html" class="active">Nous contacter</a>
+    </nav>
+    <div class="header-actions">
+      <a href="panier.html" class="cart-link" id="header-cart">Panier <span class="cart-count" data-count="0">0</span></a>
+    </div>
+  </div>
+</header>
+
+<main>
+<div class="wrap exo-page">
+  <div class="exo-header"><span class="eyebrow">Contact</span><h1>Mes informations de contact</h1></div>
+  <div class="exo" style="max-width:560px">
+    <p>Téléphone : <a href="tel:+33611202606">06 11 20 26 06</a><br>
+    mail : <a href="mailto:arthur.seche@gmail.com">arthur.seche@gmail.com</a></p>
+    <p><a href="./hello.html">homepage</a></p>
+  </div>
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <a href="hello.html" class="logo"><span class="logo-mark"></span>Kop Store</a>
+        <p>Boutique fictive créée pour apprendre Google Tag Manager et GA4. Tout fonctionne comme sur un vrai site… sauf le paiement.</p>
       </div>
-      <div class="content">
-<h1> Mes informations de contact <h1>
+      <div>
+        <h4>Boutique</h4>
+        <a href="boutique.html">Tous les produits</a>
+        <a href="produit.html">Maillot domicile 2026</a>
+        <a href="panier.html">Mon panier</a>
+      </div>
+      <div>
+        <h4>Formation</h4>
+        <a href="exercice1.html">Exercices — série 1</a>
+        <a href="exercice2.html">Exercices — série 2</a>
+        <a href="exercice3.html">Exercices — e-commerce</a>
+        <a href="examen.html">Examen final</a>
+      </div>
+      <div>
+        <h4>Newsletter</h4>
+        <form class="newsletter-form" id="newsletter-form">
+          <label for="newsletter-email" class="visually-hidden">Adresse e-mail</label>
+          <input type="email" id="newsletter-email" name="email" placeholder="votre@email.fr" required>
+          <button type="submit" class="btn btn-primary">OK</button>
+        </form>
+        <p class="newsletter-msg" aria-live="polite"></p>
+      </div>
+    </div>
+    <div class="legal">
+      <span>© Kop Store — site pédagogique, aucune vente réelle.</span>
+      <a href="#" data-reset-shop>Réinitialiser la boutique (panier, favoris, commande)</a>
+    </div>
+  </div>
+</footer>
 
-  <p> Téléphone : 06 11 20 26 06 <br>
-  mail : arthur.seche@gmail.com </p> 
-    <p><a href="https://arthurseche.github.io/eleve2/hello.html" > homepage </a> <p> 
-        <a href="https://arthurseche.github.io/eleve2/hello.html">                                     
-  </div>
-  <div class="footer">
-  </div>
-  </div> 
+<script src="mes-tags.js"></script>
 </body>
-</html>
-
 </html>
