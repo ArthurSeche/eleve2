@@ -86,6 +86,37 @@ shopHooks.beginCheckout = function (data) {
   });
 };
 
+/* 6. Choix de la livraison */
+shopHooks.addShippingInfo = function (data) {
+  dataLayer.push({ ecommerce: null });
+  dataLayer.push({
+    event: "add_shipping_info",
+    ecommerce: {
+      currency: "EUR",
+      value: data.totals.subtotal - data.totals.discount,
+      coupon: data.totals.coupon || undefined,
+      shipping_tier: data.shippingTier,
+      items: data.lines.map(versItem)
+    }
+  });
+};
+
+/* 7. Choix du paiement */
+shopHooks.addPaymentInfo = function (data) {
+  dataLayer.push({ ecommerce: null });
+  dataLayer.push({
+    event: "add_payment_info",
+    ecommerce: {
+      currency: "EUR",
+      value: data.totals.subtotal - data.totals.discount,
+      coupon: data.totals.coupon || undefined,
+      payment_type: data.paymentType,
+      items: data.lines.map(versItem)
+    }
+  });
+};
+
+
 /* 5. Achat */
 shopHooks.purchase = function (data) {
   if (!data.firstView) return; // page rechargée : on n'envoie pas l'achat une 2e fois
