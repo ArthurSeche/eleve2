@@ -39,200 +39,321 @@
   <div class="exo-header">
     <span class="eyebrow">Formation GTM · Série 3</span>
     <h1>Exercices 3 — E-commerce GA4</h1>
-    <p class="lead">La boutique Kop Store fonctionne comme un vrai site marchand : fiche produit, panier, code promo, tunnel de commande, confirmation. À vous de remonter chaque étape dans GA4.</p>
+    <p class="lead">Vous allez mesurer tout le parcours d'achat de la boutique Kop Store, de la fiche produit jusqu'à la confirmation de commande. Puis vous apprendrez à lire vous-même le dataLayer, avant une mission à mener en autonomie.</p>
   </div>
 
   <nav class="toc" aria-label="Sommaire">
-    <a href="#tunnel">Le tunnel</a><a href="#methode">Méthode</a><a href="#crochets">Les crochets</a>
-    <a href="#ex0">Échauffement</a><a href="#ex1">1. view_item</a><a href="#ex2">2. Clic panier (GTM seul)</a>
-    <a href="#ex3">3. add_to_cart</a><a href="#ex4">4. Favoris &amp; guide</a><a href="#ex5">5. Listes</a>
-    <a href="#ex6">6. Panier</a><a href="#ex7">7. Tunnel</a><a href="#ex8">8. purchase</a><a href="#ex9">Bonus</a>
+    <a href="#avant">Avant de commencer</a>
+    <a href="#partie-a">A. Le tunnel d'achat</a>
+    <a href="#partie-b">B. Les variables</a>
+    <a href="#partie-c">C. La mission</a>
+    <a href="#crochets">Annexe : les crochets</a>
   </nav>
 
-  <section class="exo" id="tunnel">
-    <h2>Le tunnel e-commerce de la boutique</h2>
+  <!-- ===================== AVANT DE COMMENCER ===================== -->
+  <section class="exo" id="avant">
+    <h2>Avant de commencer</h2>
     <div class="funnel">
-      <a href="boutique.html" class="funnel-step"><b>Boutique</b><span>view_item_list<br>select_item</span></a>
-      <a href="produit.html" class="funnel-step"><b>Fiche produit</b><span>view_item<br>add_to_cart<br>add_to_wishlist</span></a>
-      <a href="panier.html" class="funnel-step"><b>Panier</b><span>view_cart<br>remove_from_cart</span></a>
-      <a href="commande.html" class="funnel-step"><b>Commande</b><span>begin_checkout<br>add_shipping_info<br>add_payment_info</span></a>
+      <a href="produit.html" class="funnel-step"><b>Fiche produit</b><span>view_item<br>add_to_cart</span></a>
+      <a href="panier.html" class="funnel-step"><b>Panier</b><span>coupon_applied</span></a>
+      <a href="commande.html" class="funnel-step"><b>Commande</b><span>begin_checkout</span></a>
+      <a href="commande.html" class="funnel-step"><b>Livraison · paiement</b><span>add_shipping_info<br>add_payment_info</span></a>
       <a href="confirmation.html" class="funnel-step"><b>Confirmation</b><span>purchase</span></a>
     </div>
-    <p class="note" style="margin-top:12px">Le lien « Achetez ce produit » de la fiche produit mène directement à la confirmation (achat express). Le bouton <strong>{ } dataLayer</strong> en bas à gauche de chaque page affiche en direct le contenu du dataLayer. Le lien « Réinitialiser la boutique » en pied de page vide panier, favoris et commande.</p>
-  </section>
-
-  <section class="exo" id="methode">
-    <h2>Deux méthodes, un objectif</h2>
-    <p><strong>Méthode A — GTM seul :</strong> un déclencheur « Clic » sur le bon bouton, des variables « Élément DOM » qui lisent les attributs <code>data-*</code> de la page (par exemple <code>data-sku</code>, <code>data-price</code> sur <code>#product</code>). Rapide, sans toucher au code… mais fragile.</p>
-    <p><strong>Méthode B — dataLayer.push :</strong> le site envoie lui-même l'événement au bon moment, avec les bonnes données. C'est la méthode recommandée par Google pour l'e-commerce. Ici, vous jouez le rôle du développeur : vous écrivez vos <code>dataLayer.push</code> dans le fichier <code>mes-tags.js</code> (chargé sur toutes les pages).</p>
-    <p>La boutique n'envoie <strong>rien</strong> au dataLayer. En revanche, à chaque action, elle appelle une fonction « crochet » que vous pouvez écrire :</p>
-<pre><code>// dans mes-tags.js
-shopHooks.addToCart = function (data) {
-  console.log(data);          // 1. regardez d'abord ce que contient data
-  dataLayer.push({ ecommerce: null });
-  dataLayer.push({
-    event: "add_to_cart",
-    ecommerce: { /* 2. à vous de construire l'objet GA4 */ }
-  });
-};</code></pre>
-    <div class="hint"><strong>Côté GTM</strong>, pour tous les événements e-commerce : un déclencheur <em>Événement personnalisé</em> (nom exact de l'événement), une balise <em>Google Analytics : événement GA4</em>, et dans « Plus de paramètres », cochez <em>Envoyer les données d'e-commerce</em> avec la source <em>Couche de données</em>. GA4 lit alors tout seul l'objet <code>ecommerce</code>.</div>
-  </section>
-
-  <section class="exo" id="crochets">
-    <h2>Les crochets de la boutique</h2>
-    <div style="overflow-x:auto">
-    <table class="param-table">
-      <thead><tr><th>Crochet</th><th>Quand ?</th><th>Contenu de <code>data</code></th><th>Événement GA4</th></tr></thead>
-      <tbody>
-        <tr><td>viewItemList</td><td>Affichage d'une liste (boutique, accueil, « Vous aimerez aussi »)</td><td>listId, listName, products[] (avec index)</td><td><code>view_item_list</code></td></tr>
-        <tr><td>selectItem</td><td>Clic sur une carte produit</td><td>listId, listName, product</td><td><code>select_item</code></td></tr>
-        <tr><td>viewItem</td><td>Chargement de la fiche produit</td><td>product</td><td><code>view_item</code></td></tr>
-        <tr><td>selectSize</td><td>Clic sur une taille</td><td>product, size</td><td><em>perso</em></td></tr>
-        <tr><td>addToCart</td><td>Ajout <strong>réussi</strong> au panier (fiche produit, ou « + » dans le panier)</td><td>product, size, quantity, flocage, unitPrice, value, currency</td><td><code>add_to_cart</code></td></tr>
-        <tr><td>addToWishlist</td><td>Ajout aux favoris ♡</td><td>product, size</td><td><code>add_to_wishlist</code></td></tr>
-        <tr><td>sizeGuideOpen</td><td>Ouverture du guide des tailles</td><td>product</td><td><em>perso</em></td></tr>
-        <tr><td>viewCart</td><td>Chargement du panier (non vide)</td><td>lines[], totals</td><td><code>view_cart</code></td></tr>
-        <tr><td>removeFromCart</td><td>« Supprimer » ou « − » dans le panier</td><td>line, quantity, value, currency</td><td><code>remove_from_cart</code></td></tr>
-        <tr><td>couponApplied</td><td>Validation d'un code promo</td><td>coupon, valid</td><td><em>perso</em></td></tr>
-        <tr><td>beginCheckout</td><td>Chargement de la page commande</td><td>lines[], totals</td><td><code>begin_checkout</code></td></tr>
-        <tr><td>addShippingInfo</td><td>« Continuer vers le paiement »</td><td>lines[], totals, shippingTier</td><td><code>add_shipping_info</code></td></tr>
-        <tr><td>addPaymentInfo</td><td>Clic sur « Payer »</td><td>lines[], totals, paymentType</td><td><code>add_payment_info</code></td></tr>
-        <tr><td>purchase</td><td>Chargement de la confirmation</td><td>order, firstView</td><td><code>purchase</code></td></tr>
-        <tr><td>newsletterSignup</td><td>Inscription newsletter (pied de page)</td><td>email, location</td><td><code>generate_lead</code></td></tr>
-      </tbody>
-    </table>
-    </div>
-    <h3 style="margin-top:22px">Correspondance avec les paramètres « item » de GA4</h3>
-    <table class="param-table">
-      <thead><tr><th>Paramètre GA4</th><th>Où le trouver</th><th>Exemple</th></tr></thead>
-      <tbody>
-        <tr><td>item_id</td><td>product.sku / line.sku</td><td>SRFC-DOM-26</td></tr>
-        <tr><td>item_name</td><td>product.name</td><td>Maillot Domicile Stade Rennais</td></tr>
-        <tr><td>item_brand</td><td>product.brand</td><td>Puma</td></tr>
-        <tr><td>item_category</td><td>product.category</td><td>Maillots</td></tr>
-        <tr><td>item_variant</td><td>size / line.size</td><td>M</td></tr>
-        <tr><td>price</td><td>prix unitaire (unitPrice / line.price)</td><td>90 (105 avec flocage)</td></tr>
-        <tr><td>quantity</td><td>quantity</td><td>2</td></tr>
-        <tr><td>index, item_list_name</td><td>product.index, listName</td><td>0, Vous aimerez aussi</td></tr>
-      </tbody>
-    </table>
-  </section>
-
-  <section class="exo" id="ex0">
-    <h2>Échauffement <span class="level level-1">Rappel</span></h2>
-    <p>Vous savez déjà envoyer un <code>purchase</code> quand on clique sur <a href="produit.html">« Achetez ce produit »</a>. Avant d'aller plus loin, listez tout ce qui cloche avec cette méthode :</p>
+    <p style="margin-top:16px"><strong>Comment fonctionne la boutique.</strong> Le site n'envoie rien au dataLayer. À chaque action du client, il appelle une fonction « crochet » que <strong>vous</strong> écrivez dans le fichier <code>mes-tags.js</code>, chargé sur toutes les pages. Par exemple, quand une fiche produit s'affiche, la boutique appelle <code>shopHooks.viewItem</code> et lui donne les informations du produit dans <code>data</code>.</p>
+    <p><strong>Vos trois outils :</strong></p>
     <ul class="check-list">
-      <li>Quel <code>transaction_id</code> envoyez-vous ? Est-il unique ?</li>
-      <li>Que se passe-t-il si l'élève clique deux fois, ou fait « retour » puis reclique ?</li>
-      <li>Et si l'achat se fait par le panier et le tunnel de commande, sans passer par ce lien ?</li>
+      <li>Le bouton <strong>{ } dataLayer</strong>, en bas à gauche de chaque page : il montre en direct tout ce qui est poussé.</li>
+      <li>La <strong>console</strong> du navigateur (F12, onglet Console) : un <code>console.log(data)</code> dans un crochet affiche ce que la boutique vous donne. Une ligne rouge signale une erreur dans votre code.</li>
+      <li>Le lien <strong>« Réinitialiser la boutique »</strong>, en pied de page : il vide le panier et la commande pour repartir de zéro.</li>
     </ul>
-    <p class="expected">Les exercices 7 et 8 règlent ces problèmes.</p>
+    <div class="hint"><strong>Dans GTM, une fois pour toutes :</strong> un déclencheur <em>Événement personnalisé</em> avec l'expression régulière ci-dessous (case « Utiliser la correspondance d'expression régulière » cochée), et une balise <em>Événement GA4</em> dont le nom d'événement est <code>{{Event}}</code>, avec « Envoyer les données d'e-commerce » coché (source : Couche de données). Tous les événements du tunnel passeront par elle.
+      <pre><code>^(view_item_list|select_item|view_item|add_to_cart|add_to_wishlist|view_cart|remove_from_cart|begin_checkout|add_shipping_info|add_payment_info|purchase)$</code></pre></div>
+    <div class="hint"><strong>Si plus rien ne remonte :</strong> ouvrez la console (F12). Une seule erreur dans <code>mes-tags.js</code> bloque tout le fichier. Pensez aussi à désactiver votre bloqueur de publicité sur ce site, et à recharger avec Ctrl + F5.</div>
   </section>
+
+  <!-- ===================== PARTIE A ===================== -->
+  <div class="part-title" id="partie-a"><span class="eyebrow">Partie A · guidée</span><h2>Le tunnel d'achat</h2></div>
 
   <section class="exo" id="ex1">
-    <h2>Exercice 1 — Vue d'un produit <span class="level level-1">★ Débutant</span></h2>
-    <p>Envoyez <code>view_item</code> à GA4 à chaque affichage d'une <a href="produit.html">fiche produit</a>.</p>
-    <ol style="padding-left:20px;margin-bottom:12px">
-      <li>Ouvrez <code>mes-tags.js</code>, décommentez le modèle <code>shopHooks.viewItem</code> et complétez les paramètres manquants.</li>
-      <li>Dans GTM : déclencheur <em>Événement personnalisé</em> <code>view_item</code> + balise événement GA4 avec les données e-commerce.</li>
-      <li>Testez avec le mode Aperçu sur le maillot domicile, puis sur <a href="produit.html?id=echarpe">l'écharpe</a>.</li>
+    <h2>1. Le dictionnaire <span class="level level-1">Fondation</span></h2>
+    <p><strong>Pourquoi :</strong> la boutique et GA4 ne parlent pas la même langue. Le développeur a nommé ses champs comme il voulait (<code>sku</code>, <code>name</code>…) ; Google impose les siens (<code>item_id</code>, <code>item_name</code>…). Votre premier travail d'analyste est de traduire.</p>
+    <ol class="steps-list">
+      <li>Dans <code>mes-tags.js</code>, écrivez <code>shopHooks.viewItem = function (data) { console.log(data.product); };</code>, ouvrez une fiche produit et regardez la console.</li>
+      <li>Complétez le dictionnaire :</li>
     </ol>
-    <p class="expected">Attendu : <code>view_item</code> avec <code>currency</code>, <code>value</code> et un <code>items</code> contenant item_id, item_name, item_brand, item_category, price, quantity.</p>
+    <table class="param-table">
+      <thead><tr><th>La boutique dit</th><th>GA4 attend</th><th>Exemple</th></tr></thead>
+      <tbody>
+        <tr><td>sku</td><td>item_id</td><td>SRFC-DOM-26</td></tr>
+        <tr><td>name</td><td>item_name</td><td>Maillot Domicile Stade Rennais</td></tr>
+        <tr><td>brand</td><td>item_brand</td><td>Puma</td></tr>
+        <tr><td>category</td><td>item_category</td><td>Maillots</td></tr>
+        <tr><td>size</td><td>item_variant</td><td>M</td></tr>
+        <tr><td>price</td><td>price</td><td>90</td></tr>
+        <tr><td>quantity</td><td>quantity</td><td>1</td></tr>
+      </tbody>
+    </table>
+    <ol class="steps-list" start="3"><li>Écrivez la fonction traductrice <code>versItem</code>, en haut de <code>mes-tags.js</code>. Elle servira dans tous les exercices suivants.</li></ol>
+    <details class="solution"><summary>Afficher le code</summary><p class="code-tag">🟢 Code à coller dans <code>mes-tags.js</code></p><pre><code>/* Le dictionnaire : vocabulaire de la boutique → vocabulaire GA4 */
+function versItem(x) {
+  return {
+    item_id: x.sku,
+    item_name: x.name,
+    item_brand: x.brand,
+    item_category: x.category,
+    item_variant: x.size,       // vide quand on regarde un produit sans taille choisie
+    price: x.price,
+    quantity: x.quantity || 1   // 1 par défaut
+  };
+}</code></pre></details>
   </section>
 
   <section class="exo" id="ex2">
-    <h2>Exercice 2 — Clic « Ajouter au panier » avec GTM seul <span class="level level-2">★★ Intermédiaire</span></h2>
-    <p>Sans écrire de <code>dataLayer.push</code>, envoyez un événement <code>add_to_cart</code> au clic sur le bouton <strong>Ajouter au panier</strong>.</p>
-    <ol style="padding-left:20px;margin-bottom:12px">
-      <li>Déclencheur <em>Clic – Tous les éléments</em> sur le bouton (son id est <code>add-to-cart</code>, sa classe <code>btn-add-to-cart</code>).</li>
-      <li>Variables <em>Élément DOM</em> qui lisent <code>data-sku</code>, <code>data-name</code>, <code>data-price</code> sur l'élément <code>#product</code>.</li>
-      <li>Variable <em>Variable d'événement automatique</em> → attribut <code>data-selected-size</code> de l'élément cliqué.</li>
-      <li>Une variable <em>JavaScript personnalisé</em> qui renvoie le tableau <code>items</code> :</li>
-    </ol>
-<pre><code>function () {
-  return [{
-    item_id: {{DOM - sku}},
-    item_name: {{DOM - nom}},
-    price: Number({{DOM - prix}}),
-    item_variant: {{Clic - taille}},
-    quantity: Number(document.getElementById("qty-input").value)
-  }];
-}</code></pre>
-    <div class="hint"><strong>Le piège :</strong> cliquez sur « Ajouter au panier » <em>sans choisir de taille</em>. Le produit n'est pas ajouté… mais votre balise s'est-elle déclenchée ? Notez ce que vous observez : c'est tout l'intérêt de l'exercice suivant.</div>
+    <h2>2. Vue d'un produit — <code>view_item</code> <span class="level level-1">★</span></h2>
+    <p><strong>Pourquoi :</strong> c'est l'entrée du tunnel. Sans elle, impossible de calculer le taux d'ajout au panier (ajouts ÷ vues), l'indicateur n°1 d'une fiche produit.</p>
+    <p><strong>À faire :</strong> écrire <code>shopHooks.viewItem</code> pour pousser <code>view_item</code>, en utilisant <code>versItem(data.product)</code>.</p>
+    <p class="expected"><strong>Réussi quand :</strong> sur le maillot, <code>item_id</code> = SRFC-DOM-26 et <code>value</code> = 90 ; sur <a href="produit.html?id=echarpe">l'écharpe</a>, KOP-ECH-01 et 22.</p>
+    <details class="solution"><summary>Afficher le code</summary><p class="code-tag">🟢 Code à coller dans <code>mes-tags.js</code></p><pre><code>shopHooks.viewItem = function (data) {
+  dataLayer.push({ ecommerce: null });
+  dataLayer.push({
+    event: "view_item",
+    ecommerce: {
+      currency: "EUR",
+      value: data.product.price,
+      items: [versItem(data.product)]
+    }
+  });
+};</code></pre></details>
   </section>
 
   <section class="exo" id="ex3">
-    <h2>Exercice 3 — Ajout au panier via dataLayer <span class="level level-2">★★ Intermédiaire</span></h2>
-    <p>Écrivez <code>shopHooks.addToCart</code> pour pousser un vrai <code>add_to_cart</code>, uniquement quand l'ajout a réussi. Mettez en pause la balise de l'exercice 2.</p>
-    <ul class="check-list">
-      <li>Sans taille choisie : aucun événement.</li>
-      <li>Taille L, quantité 3 : <code>quantity: 3</code>, <code>item_variant: "L"</code>, <code>value: 270</code>.</li>
-      <li>Avec flocage : le <code>price</code> unitaire passe à 105.</li>
-      <li>Le bouton « + » de la page panier déclenche aussi un <code>add_to_cart</code> (quantité 1). Normal ?</li>
-    </ul>
+    <h2>3. Ajout au panier — <code>add_to_cart</code> <span class="level level-2">★★</span></h2>
+    <p><strong>Pourquoi :</strong> mesurer un ajout <em>réussi</em>, et non un simple clic. Cliquez sur « Ajouter au panier » sans choisir de taille : rien n'est ajouté. Un tracking au clic aurait compté un faux ajout.</p>
+    <p><strong>À faire :</strong> écrire <code>shopHooks.addToCart</code>. La boutique donne le produit dans <code>data.product</code>, et à part la taille (<code>data.size</code>), le prix unitaire flocage compris (<code>data.unitPrice</code>) et la quantité (<code>data.quantity</code>).</p>
+    <p class="expected"><strong>Réussi quand :</strong> taille L, quantité 3 → <code>item_variant: "L"</code>, <code>quantity: 3</code>, <code>value: 270</code>. Avec flocage, <code>price</code> passe à 105.</p>
+    <details class="solution"><summary>Afficher le code</summary><p class="code-tag">🟢 Code à coller dans <code>mes-tags.js</code></p><pre><code>shopHooks.addToCart = function (data) {
+  var item = versItem(data.product);
+  item.item_variant = data.size;      // la taille choisie
+  item.price = data.unitPrice;        // le prix, flocage compris
+  item.quantity = data.quantity;      // la quantité ajoutée
+  dataLayer.push({ ecommerce: null });
+  dataLayer.push({
+    event: "add_to_cart",
+    ecommerce: {
+      currency: "EUR",
+      value: data.value,
+      items: [item]
+    }
+  });
+};</code></pre></details>
   </section>
 
   <section class="exo" id="ex4">
-    <h2>Exercice 4 — Favoris et guide des tailles <span class="level level-1">★ Débutant</span></h2>
-    <p>Sur la <a href="produit.html">fiche produit</a> :</p>
-    <ul class="check-list">
-      <li>Le cœur ♡ envoie <code>add_to_wishlist</code> (événement e-commerce recommandé par GA4).</li>
-      <li>Le lien « Guide des tailles » envoie un événement personnalisé <code>size_guide_open</code> avec un paramètre <code>product_id</code>. Pensez à déclarer la dimension personnalisée dans GA4 !</li>
-      <li>Bonus : un événement <code>select_size</code> avec la taille choisie. Est-ce vraiment utile d'envoyer ça à GA4 ?</li>
-    </ul>
+    <h2>4. Début de commande — <code>begin_checkout</code> <span class="level level-2">★★</span></h2>
+    <p><strong>Pourquoi :</strong> sans cette étape, on voit des ajouts au panier puis des achats, mais rien entre les deux. Elle coupe le tunnel en deux : abandon dans le panier, ou pendant la commande ?</p>
+    <p><strong>À faire :</strong> la boutique appelle <code>shopHooks.beginCheckout</code> à l'arrivée sur la page commande. Les articles sont dans <code>data.lines</code> et les montants dans <code>data.totals</code>. Astuce : <code>data.lines.map(versItem)</code> traduit chaque article de la liste.</p>
+    <p class="expected"><strong>Réussi quand :</strong> maillot M seul → <code>value: 90</code>, 1 article. Avec le code <code>GTM10</code> saisi dans le panier → <code>value: 81</code> et <code>coupon: "GTM10"</code>.</p>
+    <details class="solution"><summary>Afficher le code</summary><p class="code-tag">🟢 Code à coller dans <code>mes-tags.js</code></p><pre><code>shopHooks.beginCheckout = function (data) {
+  dataLayer.push({ ecommerce: null });
+  dataLayer.push({
+    event: "begin_checkout",
+    ecommerce: {
+      currency: "EUR",
+      value: data.totals.subtotal - data.totals.discount,
+      coupon: data.totals.coupon || undefined,
+      items: data.lines.map(versItem)
+    }
+  });
+};</code></pre></details>
   </section>
 
   <section class="exo" id="ex5">
-    <h2>Exercice 5 — Listes de produits <span class="level level-2">★★ Intermédiaire</span></h2>
-    <p>Mesurez quelles listes font cliquer : la <a href="boutique.html">boutique</a>, les meilleures ventes de <a href="hello.html">l'accueil</a> et le bloc « Vous aimerez aussi » de la fiche produit.</p>
-    <ul class="check-list">
-      <li><code>view_item_list</code> avec <code>item_list_id</code>, <code>item_list_name</code> et un <code>index</code> pour chaque produit.</li>
-      <li><code>select_item</code> au clic sur une carte, avec la position du produit cliqué.</li>
-    </ul>
-    <div class="hint"><strong>Bonus GTM :</strong> le bloc « Vous aimerez aussi » est en bas de page, beaucoup de visiteurs ne le voient jamais. Utilisez plutôt un déclencheur <em>Visibilité de l'élément</em> sur <code>#related-products</code> (50 % visible, une fois par page) pour n'envoyer <code>view_item_list</code> que lorsqu'il est réellement vu.</div>
+    <h2>5. Livraison et paiement <span class="level level-2">★★</span></h2>
+    <p><strong>Pourquoi :</strong> savoir <em>où</em> les clients abandonnent pendant la commande. Après avoir vu les frais de port ? Au moment de payer ?</p>
+    <p><strong>À faire :</strong> deux crochets presque identiques à <code>begin_checkout</code>, avec une information en plus chacun :</p>
+    <table class="param-table">
+      <thead><tr><th>Moment</th><th>Crochet</th><th>Événement</th><th>En plus</th></tr></thead>
+      <tbody>
+        <tr><td>« Continuer vers le paiement »</td><td>addShippingInfo</td><td>add_shipping_info</td><td>shipping_tier ← data.shippingTier</td></tr>
+        <tr><td>« Payer »</td><td>addPaymentInfo</td><td>add_payment_info</td><td>payment_type ← data.paymentType</td></tr>
+      </tbody>
+    </table>
+    <p class="expected"><strong>Réussi quand :</strong> Express puis PayPal → <code>shipping_tier: "Express"</code> puis <code>payment_type: "PayPal"</code>. La page passe à la confirmation en une demi-seconde : retrouvez l'événement dans l'historique de Tag Assistant.</p>
+    <details class="solution"><summary>Afficher le code</summary><p class="code-tag">🟢 Code à coller dans <code>mes-tags.js</code></p><pre><code>shopHooks.addShippingInfo = function (data) {
+  dataLayer.push({ ecommerce: null });
+  dataLayer.push({
+    event: "add_shipping_info",
+    ecommerce: {
+      currency: "EUR",
+      value: data.totals.subtotal - data.totals.discount,
+      coupon: data.totals.coupon || undefined,
+      shipping_tier: data.shippingTier,
+      items: data.lines.map(versItem)
+    }
+  });
+};
+
+shopHooks.addPaymentInfo = function (data) {
+  dataLayer.push({ ecommerce: null });
+  dataLayer.push({
+    event: "add_payment_info",
+    ecommerce: {
+      currency: "EUR",
+      value: data.totals.subtotal - data.totals.discount,
+      coupon: data.totals.coupon || undefined,
+      payment_type: data.paymentType,
+      items: data.lines.map(versItem)
+    }
+  });
+};</code></pre></details>
   </section>
 
   <section class="exo" id="ex6">
-    <h2>Exercice 6 — Le panier <span class="level level-2">★★ Intermédiaire</span></h2>
-    <p>Ajoutez 2 ou 3 articles puis ouvrez le <a href="panier.html">panier</a>.</p>
+    <h2>6. L'achat — <code>purchase</code> <span class="level level-3">★★★</span></h2>
+    <p><strong>Pourquoi :</strong> c'est l'événement qui porte le chiffre d'affaires. Un achat compté deux fois, c'est un faux chiffre présenté à la direction.</p>
+    <p><strong>À faire :</strong> la boutique appelle <code>shopHooks.purchase</code> sur la page de confirmation. La commande est dans <code>data.order</code> (numéro, montants, articles dans <code>data.order.lines</code>).</p>
     <ul class="check-list">
-      <li><code>view_cart</code> au chargement, avec tous les articles et la valeur du panier.</li>
-      <li><code>remove_from_cart</code> sur « Supprimer » (toute la quantité) et sur « − » (quantité 1).</li>
-      <li>Un événement personnalisé <code>coupon_applied</code> quand un code est saisi (testez <code>GTM10</code> et un faux code). Envoyez-vous les codes invalides ?</li>
+      <li>Envoyez <code>transaction_id</code>, <code>value</code>, <code>tax</code>, <code>shipping</code>, <code>coupon</code> et les articles.</li>
+      <li>Rechargez la confirmation : l'achat ne doit <strong>pas</strong> repartir. Indice : <code>data.firstView</code>.</li>
+      <li>Décidez si <code>value</code> inclut les frais de port, et justifiez votre choix.</li>
     </ul>
+    <details class="solution"><summary>Afficher le code</summary><p class="code-tag">🟢 Code à coller dans <code>mes-tags.js</code></p><pre><code>shopHooks.purchase = function (data) {
+  if (!data.firstView) return; // page rechargée : on n'envoie pas l'achat une 2e fois
+  var o = data.order;
+  dataLayer.push({ ecommerce: null });
+  dataLayer.push({
+    event: "purchase",
+    ecommerce: {
+      transaction_id: o.transaction_id,
+      currency: o.currency,
+      value: Math.round((o.total - o.shipping) * 100) / 100,
+      tax: o.tax,
+      shipping: o.shipping,
+      coupon: o.coupon || undefined,
+      items: o.lines.map(versItem)
+    }
+  });
+};</code></pre></details>
   </section>
 
+  <!-- ===================== PARTIE B ===================== -->
+  <div class="part-title" id="partie-b"><span class="eyebrow">Partie B · guidée</span><h2>Les variables de couche de données</h2>
+    <p class="lead">Le dataLayer est une mémoire. Une <strong>variable de couche de données</strong> (DLV) est une étiquette GTM qui va chercher une information précise dans cette mémoire, pour l'utiliser dans une balise ou un déclencheur. Jusqu'ici, la case « Envoyer les données d'e-commerce » faisait ce travail pour vous ; maintenant, vous le faites à la main.</p></div>
+
   <section class="exo" id="ex7">
-    <h2>Exercice 7 — Le tunnel de commande <span class="level level-3">★★★ Avancé</span></h2>
-    <p>Depuis le panier, cliquez sur « Passer la commande ».</p>
-    <ul class="check-list">
-      <li><code>begin_checkout</code> au chargement de la page commande (avec <code>coupon</code> s'il y en a un).</li>
-      <li><code>add_shipping_info</code> au clic sur « Continuer vers le paiement », avec <code>shipping_tier</code> (Standard, Point relais ou Express).</li>
-      <li><code>add_payment_info</code> au clic sur « Payer », avec <code>payment_type</code>.</li>
-    </ul>
-    <p class="expected">Question : dans GA4, le rapport « Parcours d'achat » utilise ces événements. Que se passe-t-il si <code>begin_checkout</code> manque ?</p>
+    <h2>7. Le code promo — lire une valeur <span class="level level-2">★★</span></h2>
+    <p><strong>Pourquoi :</strong> savoir quels codes les clients tapent, y compris les faux. Si 200 personnes tapent « NOEL50 », un faux code circule sur internet.</p>
+    <ol class="steps-list">
+      <li>Écrivez <code>shopHooks.couponApplied</code> pour pousser un événement <strong>inventé</strong> <code>coupon_applied</code>, avec <code>coupon_code</code> et <code>coupon_valid</code> (« oui » ou « non »).</li>
+      <li>GTM : deux variables de couche de données, <code>DLV - coupon_code</code> et <code>DLV - coupon_valid</code>.</li>
+      <li>GTM : un déclencheur Événement personnalisé <code>coupon_applied</code> et une balise Événement GA4 <code>coupon_applied</code> avec les deux paramètres.</li>
+      <li>GA4 : Administration → Définitions personnalisées → deux dimensions personnalisées, champ d'application <em>Événement</em>, paramètres <code>coupon_code</code> et <code>coupon_valid</code>.</li>
+    </ol>
+    <p class="expected"><strong>Réussi quand :</strong> dans le <a href="panier.html">panier</a>, <code>NOEL50</code> donne <code>coupon_valid: "non"</code> et <code>GTM10</code> donne <code>"oui"</code> (onglet Variables de Tag Assistant).</p>
+    <details class="solution"><summary>Afficher le code</summary><p class="code-tag">🟢 Code à coller dans <code>mes-tags.js</code></p><pre><code>shopHooks.couponApplied = function (data) {
+  dataLayer.push({
+    event: "coupon_applied",
+    coupon_code: data.coupon,
+    coupon_valid: data.valid ? "oui" : "non"
+  });
+};</code></pre></details>
   </section>
 
   <section class="exo" id="ex8">
-    <h2>Exercice 8 — L'achat, le vrai <span class="level level-3">★★★ Avancé</span></h2>
-    <p>Sur la <a href="confirmation.html">page de confirmation</a>, envoyez un <code>purchase</code> complet.</p>
-    <ul class="check-list">
-      <li><code>transaction_id</code> (ex. KOP-20260930-1234), <code>value</code>, <code>tax</code>, <code>shipping</code>, <code>currency</code>, <code>coupon</code>.</li>
-      <li><code>items</code> avec la taille de chaque article en <code>item_variant</code>.</li>
-      <li>Rechargez la page : la transaction ne doit <strong>pas</strong> être renvoyée. Indice : regardez <code>data.firstView</code>.</li>
-      <li>Décidez si <code>value</code> inclut ou non les frais de port, et justifiez votre choix.</li>
-      <li>Faites un achat par le tunnel <em>et</em> un achat express (« Achetez ce produit ») : les deux doivent remonter.</li>
-    </ul>
-    <p class="expected">Vérifiez dans GA4 → DebugView, puis le lendemain dans Rapports → Monétisation → Achats e-commerce.</p>
+    <h2>8. La commande premium — une variable comme condition <span class="level level-3">★★★</span></h2>
+    <p><strong>Pourquoi :</strong> repérer les grosses commandes (100 € et plus). Aucun code à écrire : vous lisez une valeur que votre <code>purchase</code> envoie déjà.</p>
+    <ol class="steps-list">
+      <li>GTM : variable de couche de données <code>DLV - montant commande</code>, nom <code>ecommerce.value</code>. Le point permet d'aller chercher <code>value</code> à l'intérieur de <code>ecommerce</code>.</li>
+      <li>GTM : déclencheur Événement personnalisé <code>purchase</code>, « Certains événements personnalisés », condition <code>DLV - montant commande</code> <em>supérieur ou égal à</em> <code>100</code>.</li>
+      <li>GTM : balise Événement GA4 <code>commande_premium</code>, sans paramètre, sur ce déclencheur.</li>
+    </ol>
+    <p class="expected"><strong>Réussi quand :</strong> 1 maillot (90 €) → la balise ne part pas. 2 maillots (180 €) → elle part.<br><strong>Question :</strong> 1 maillot + livraison express = 99,90 €. La balise part-elle ? Pourquoi ?</p>
   </section>
 
-  <section class="exo" id="ex9">
-    <h2>Bonus <span class="level level-2">★★</span></h2>
+  <!-- ===================== PARTIE C ===================== -->
+  <div class="part-title" id="partie-c"><span class="eyebrow">Partie C · en autonomie</span><h2>La mission</h2>
+    <p class="lead">Plus d'instructions techniques : une demande métier, comme en entreprise. À vous de trouver quoi mesurer, comment, et de prouver que ça marche. Durée : 45 minutes.</p></div>
+
+  <section class="exo mail" id="mission">
+    <div class="mail-head">
+      <div><span class="mail-label">De</span> Directeur marketing, Kop Store</div>
+      <div><span class="mail-label">À</span> L'équipe data</div>
+      <div><span class="mail-label">Objet</span> <strong>Besoin de chiffres avant le comité de lundi</strong></div>
+    </div>
+    <div class="mail-body">
+      <p>Bonjour,</p>
+      <p>J'ai besoin que vous mettiez en place le suivi de trois choses sur le site :</p>
+      <ol>
+        <li><strong>Les regrets.</strong> Quels produits les clients retirent-ils de leur panier ?</li>
+        <li><strong>La newsletter.</strong> On a un formulaire d'inscription en bas de toutes les pages. Est-ce qu'il sert à quelque chose ? Je veux compter chaque inscription comme une conversion.</li>
+        <li><strong>Les tailles.</strong> Je pense que nos clients hésitent sur les tailles. Combien ouvrent le guide des tailles, et sur quels produits ?</li>
+      </ol>
+      <p>Merci de me confirmer quand c'est en place, avec la preuve que ça fonctionne.</p>
+    </div>
+  </section>
+
+  <section class="exo">
+    <h2>Ce que vous devez rendre</h2>
+    <p><strong>1. Un plan de marquage, AVANT de toucher à GTM.</strong> Recopiez et remplissez ce tableau, une ligne par question :</p>
+    <div style="overflow-x:auto">
+    <table class="param-table plan">
+      <thead><tr><th>Question</th><th>Nom de l'événement</th><th>Quand se déclenche-t-il ?</th><th>Paramètres envoyés</th><th>D'où vient chaque valeur ?</th><th>Standard GA4 ou inventé ?</th></tr></thead>
+      <tbody>
+        <tr><td>1. Regrets</td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>2. Newsletter</td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>3. Tailles</td><td></td><td></td><td></td><td></td><td></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p><strong>2. La mise en place :</strong> le code dans <code>mes-tags.js</code>, la configuration dans GTM, et dans GA4 si nécessaire.</p>
+    <p><strong>3. La preuve :</strong> une capture de Tag Assistant pour chacun des 3 événements, montrant la balise déclenchée et les bonnes valeurs.</p>
+    <h3 style="margin-top:18px">Les règles du jeu</h3>
     <ul class="check-list">
-      <li>Newsletter du pied de page : envoyez <code>generate_lead</code>. Pourquoi ne faut-il surtout pas envoyer l'adresse e-mail à GA4 ?</li>
-      <li>Créez un seul déclencheur pour tous les événements e-commerce grâce à une expression régulière, et une seule balise GA4 dont le nom d'événement est <code>{{Event}}</code>.</li>
-      <li>Ajoutez un paramètre <code>page_type</code> (home, product, cart…) à tous vos événements. Indice : regardez l'attribut <code>data-page</code> de la balise <code>&lt;body&gt;</code>.</li>
+      <li>Vous pouvez relire toute cette page, en particulier l'<a href="#crochets">annexe des crochets</a>.</li>
+      <li>Personne ne vous dit quel crochet utiliser : à vous de le trouver.</li>
+      <li>Le directeur ne connaît rien à la technique : vos noms doivent être compréhensibles et, quand c'est possible, <strong>ceux recommandés par Google</strong>.</li>
     </ul>
+  </section>
+
+  <section class="exo">
+    <h2>Coups de pouce</h2>
+    <p class="note">Chaque coup de pouce ouvert coûte un point. Ouvrez-les seulement si vous êtes bloqués.</p>
+    <details class="solution hint-box"><summary>Coup de pouce 1 — Par où commencer ?</summary>
+      <p>L'<a href="#crochets">annexe</a> liste tous les crochets de la boutique. Trouvez ceux qui correspondent aux trois questions, puis commencez chacun par un <code>console.log(data)</code> pour voir ce que la boutique vous donne.</p></details>
+    <details class="solution hint-box"><summary>Coup de pouce 2 — Quels noms d'événements ?</summary>
+      <p>Pour deux des trois questions, Google a déjà prévu un nom officiel. Cherchez « GA4 recommended events » sur internet. Un nom officiel débloque des rapports tout prêts dans GA4 ; un nom inventé oblige à tout reconstruire à la main.</p></details>
+    <details class="solution hint-box"><summary>Coup de pouce 3 — Ai-je le droit de tout envoyer ?</summary>
+      <p>Relisez la question 2. Le crochet de la newsletter vous donne quelque chose que vous n'avez pas le droit d'envoyer à Google Analytics. Lequel, et pourquoi ?</p></details>
+  </section>
+
+  <!-- ===================== ANNEXE ===================== -->
+  <section class="exo" id="crochets">
+    <h2>Annexe — Les crochets de la boutique</h2>
+    <p>Pour utiliser un crochet, écrivez <code>shopHooks.nomDuCrochet = function (data) { … };</code> dans <code>mes-tags.js</code>.</p>
+    <div style="overflow-x:auto">
+    <table class="param-table">
+      <thead><tr><th>Crochet</th><th>Quand la boutique l'appelle</th><th>Contenu de <code>data</code></th></tr></thead>
+      <tbody>
+        <tr><td>viewItem</td><td>Affichage d'une fiche produit</td><td>product</td></tr>
+        <tr><td>selectSize</td><td>Clic sur une taille</td><td>product, size</td></tr>
+        <tr><td>addToCart</td><td>Ajout réussi au panier (fiche produit, ou « + » dans le panier)</td><td>product, size, quantity, flocage, unitPrice, value, currency</td></tr>
+        <tr><td>addToWishlist</td><td>Ajout aux favoris ♡</td><td>product, size</td></tr>
+        <tr><td>sizeGuideOpen</td><td>Ouverture du guide des tailles</td><td>product</td></tr>
+        <tr><td>viewItemList</td><td>Affichage d'une liste de produits</td><td>listId, listName, products</td></tr>
+        <tr><td>selectItem</td><td>Clic sur un produit d'une liste</td><td>listId, listName, product</td></tr>
+        <tr><td>viewCart</td><td>Chargement du panier (non vide)</td><td>lines, totals</td></tr>
+        <tr><td>removeFromCart</td><td>« Supprimer » ou « − » dans le panier</td><td>line, quantity (retirée), value, currency</td></tr>
+        <tr><td>couponApplied</td><td>Validation d'un code promo</td><td>coupon, valid</td></tr>
+        <tr><td>beginCheckout</td><td>Arrivée sur la page commande</td><td>lines, totals</td></tr>
+        <tr><td>addShippingInfo</td><td>« Continuer vers le paiement »</td><td>lines, totals, shippingTier</td></tr>
+        <tr><td>addPaymentInfo</td><td>« Payer »</td><td>lines, totals, paymentType</td></tr>
+        <tr><td>purchase</td><td>Affichage de la confirmation</td><td>order, firstView</td></tr>
+        <tr><td>newsletterSignup</td><td>Inscription à la newsletter (pied de page)</td><td>email, location</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="note" style="margin-top:10px"><code>lines</code> = la liste des articles (chacun avec sku, name, brand, category, size, price, quantity). <code>totals</code> = subtotal, discount, coupon, shipping, total, currency.</p>
   </section>
 </div>
 </main>

@@ -430,3 +430,32 @@ th { font-weight: 600; background: var(--soft); }
 .gtm-form.dark .btn-small { padding: 6px 12px; font-size: .78rem; }
 .dl-gtm { border-bottom: 1px solid #2A2A2E; padding-bottom: 8px; margin-bottom: 4px; }
 @media (max-width: 760px) { .gtm-config-card { grid-template-columns: 1fr; } }
+
+/* ---------- Exercices 3 v2 : parties, solutions repliables, mission ---------- */
+.part-title { margin: 38px 0 16px; }
+.part-title h2 { margin: 0 0 6px; font-size: 2.1rem; }
+.part-title .lead { margin: 4px 0 0; }
+.steps-list { padding-left: 22px; margin: 6px 0 12px; display: grid; gap: 6px; }
+.exo > h2 code { font-size: .8em; text-transform: none; }
+details.solution { margin-top: 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); }
+details.solution > summary { cursor: pointer; list-style: none; padding: 10px 14px; font-weight: 600; font-size: .92rem; display: flex; align-items: center; gap: 8px; }
+details.solution > summary::-webkit-details-marker { display: none; }
+details.solution > summary::before { content: "▸"; color: var(--red); transition: transform .15s; }
+details.solution[open] > summary::before { transform: rotate(90deg); }
+details.solution > *:not(summary) { margin: 0 14px 14px; }
+details.solution pre { margin-bottom: 14px; }
+.code-tag { font-size: .85rem; color: var(--green); font-weight: 600; }
+.hint-box > summary { color: var(--ink); }
+.hint-box p { font-size: .95rem; }
+.exo.mail { padding: 0; overflow: hidden; border-color: var(--black); }
+.mail-head { background: var(--soft); padding: 16px 24px; display: grid; gap: 4px; font-size: .92rem; border-bottom: 1px solid var(--line); }
+.mail-label { display: inline-block; width: 52px; color: var(--muted); font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; }
+.mail-body { padding: 20px 24px 8px; }
+.mail-body ol { padding-left: 22px; margin: 0 0 1em; display: grid; gap: 8px; }
+table.plan td { height: 46px; min-width: 110px; }
+table.plan td:first-child { font-weight: 600; white-space: nowrap; }
+@media (max-width: 640px) { .mail-head, .mail-body { padding-inline: 16px; } }
+.exo table.param-table { display: block; overflow-x: auto; }
+.exo table.param-table td:first-child { white-space: normal; }
+.hint { min-width: 0; overflow: hidden; }
+.hint pre { max-width: 100%; margin: 10px 0 0; }
