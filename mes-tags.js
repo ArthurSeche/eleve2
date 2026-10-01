@@ -44,3 +44,23 @@ shopHooks.viewItem = function (data) {
 
 /* ---------- À VOUS : écrivez vos crochets ci-dessous ---------- */
 
+shopHooks.viewItem = function (data) {
+  var p = data.product;
+  dataLayer.push({ ecommerce: null });
+  dataLayer.push({
+    event: "view_item",
+    ecommerce: {
+      currency: "EUR",
+      value: p.price,
+      items: [{
+        item_id: p.sku,
+        item_name: p.name,
+        item_brand: p.brand,
+        item_category: p.category,
+        price: p.price,
+        quantity: 1
+      }]
+    }
+  });
+};
+
