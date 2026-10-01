@@ -64,3 +64,39 @@ shopHooks.viewItem = function (data) {
   });
 };
 
+shopHooks.addToCart = function (data) {
+  var item = {
+    item_id: data.product.sku,
+    item_name: data.product.name,
+    item_brand: data.product.brand,
+    item_category: data.product.category,
+    item_variant: data.size,
+    price: data.unitPrice,
+    quantity: data.quantity
+  };
+  dataLayer.push({ ecommerce: null });
+  dataLayer.push({
+    event: "add_to_cart",
+    ecommerce: { currency: data.currency, value: data.value, items: [item] }
+  });
+};
+
+shopHooks.addToWishlist = function (data) {
+  var p = data.product;
+  dataLayer.push({ ecommerce: null });
+  dataLayer.push({
+    event: "add_to_wishlist",           // ← seule ligne différente
+    ecommerce: {
+      currency: "EUR",
+      value: p.price,
+      items: [{
+        item_id: p.sku,
+        item_name: p.name,
+        item_brand: p.brand,
+        item_category: p.category,
+        price: p.price,
+        quantity: 1
+      }]
+    }
+  });
+};
