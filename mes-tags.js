@@ -22,110 +22,21 @@ window.shopHooks = window.shopHooks || {};
 
 /* ---------- MODÈLE (exercice 1) : à décommenter et compléter ----------
 
-shopHooks.viewItem = function (data) {
-  var p = data.product;
-  dataLayer.push({ ecommerce: null });
-  dataLayer.push({
-    event: "view_item",
-    ecommerce: {
-      currency: "EUR",
-      value: p.price,
-      items: [{
-        item_id: p.sku,
-        item_name: p.name
-        // ... complétez : item_brand, item_category, price, quantity
-      }]
-    }
-  });
-};
+
 
 ------------------------------------------------------------------------ */
 
 
 /* ---------- À VOUS : écrivez vos crochets ci-dessous ---------- */
 
-shopHooks.viewItem = function (data) {
-  var p = data.product;
-  dataLayer.push({ ecommerce: null });
-  dataLayer.push({
-    event: "view_item",
-    ecommerce: {
-      currency: "EUR",
-      value: p.price,
-      items: [{
-        item_id: p.sku,
-        item_name: p.name,
-        item_brand: p.brand,
-        item_category: p.category,
-        price: p.price,
-        quantity: 1
-      }]
-    }
-  });
-};
-
-shopHooks.addToCart = function (data) {
-  var item = {
-    item_id: data.product.sku,
-    item_name: data.product.name,
-    item_brand: data.product.brand,
-    item_category: data.product.category,
-    item_variant: data.size,
-    price: data.unitPrice,
-    quantity: data.quantity
+function versItem(x) {
+  return {
+    item_id: x.sku,
+    item_name: x.name,
+    item_brand: x.brand,
+    item_category: x.category,
+    item_variant: x.size,       // vide quand on regarde un produit sans taille choisie
+    price: x.price,
+    quantity: x.quantity || 1   // 1 par défaut
   };
-  dataLayer.push({ ecommerce: null });
-  dataLayer.push({
-    event: "add_to_cart",
-    ecommerce: { currency: data.currency, value: data.value, items: [item] }
-  });
-};
-
-shopHooks.addToWishlist = function (data) {
-  var p = data.product;
-  dataLayer.push({ ecommerce: null });
-  dataLayer.push({
-    event: "add_to_wishlist",           // ← seule ligne différente
-    ecommerce: {
-      currency: "EUR",
-      value: p.price,
-      items: [{
-        item_id: p.sku,
-        item_name: p.name,
-        item_brand: p.brand,
-        item_category: p.category,
-        price: p.price,
-        quantity: 1
-      }]
-    }
-  });
-};
-
-
-shopHooks.purchase = function (data) {
-  if (!data.firstView) return; // page rechargée : on n'envoie pas l'achat une 2e fois
-  var o = data.order;
-  dataLayer.push({ ecommerce: null });
-  dataLayer.push({
-    event: "purchase",
-    ecommerce: {
-      transaction_id: o.transaction_id,
-      currency: o.currency,
-      value: Math.round((o.total - o.shipping) * 100) / 100,
-      tax: o.tax,
-      shipping: o.shipping,
-      coupon: o.coupon || undefined,
-      items: o.lines.map(function (l) {
-        return {
-          item_id: l.sku,
-          item_name: l.name,
-          item_brand: l.brand,
-          item_category: l.category,
-          item_variant: l.size,
-          price: l.price,
-          quantity: l.quantity
-        };
-      })
-    }
-  });
-};
+}
