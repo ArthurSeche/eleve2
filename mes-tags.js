@@ -100,3 +100,32 @@ shopHooks.addToWishlist = function (data) {
     }
   });
 };
+
+
+shopHooks.purchase = function (data) {
+  if (!data.firstView) return; // page rechargée : on n'envoie pas l'achat une 2e fois
+  var o = data.order;
+  dataLayer.push({ ecommerce: null });
+  dataLayer.push({
+    event: "purchase",
+    ecommerce: {
+      transaction_id: o.transaction_id,
+      currency: o.currency,
+      value: Math.round((o.total - o.shipping) * 100) / 100,
+      tax: o.tax,
+      shipping: o.shipping,
+      coupon: o.coupon || undefined,
+      items: o.lines.map(function (l) {
+        return {
+          item_id: l.sku,
+          item_name: l.name,
+          item_brand: l.brand,
+          item_category: l.category,
+          item_variant: l.size,
+          price: l.price,
+          quantity: l.quantity
+        };
+      })
+    }
+  });
+};
