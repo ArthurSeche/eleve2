@@ -40,3 +40,12 @@ function versItem(x) {
     quantity: x.quantity || 1   // 1 par défaut
   };
 }
+
+// view_item
+items: [versItem(data.product)]
+
+// begin_checkout, view_cart, add_shipping_info, add_payment_info
+items: data.lines.map(versItem)
+
+// purchase
+items: data.order.lines.map(versItem)
