@@ -135,3 +135,12 @@ shopHooks.purchase = function (data) {
     }
   });
 };
+
+/* 8. Code promo saisi (événement personnalisé) */
+shopHooks.couponApplied = function (data) {
+  dataLayer.push({
+    event: "coupon_applied",
+    coupon_code: data.coupon,
+    coupon_valid: data.valid ? "oui" : "non"
+  });
+};
