@@ -144,3 +144,33 @@ shopHooks.couponApplied = function (data) {
     coupon_valid: data.valid ? "oui" : "non"
   });
 };
+
+/* Mission 2 — Ajout aux favoris */
+shopHooks.addToWishlist = function (data) {
+  var item = versItem(data.product);
+  if (data.size) item.item_variant = data.size;   // la taille, si elle a été choisie
+  dataLayer.push({ ecommerce: null });
+  dataLayer.push({
+    event: "add_to_wishlist",
+    ecommerce: {
+      currency: "EUR",
+      value: data.product.price,
+      items: [item]
+    }ddd
+  });
+};
+
+shopHooks.removeFromCart = function (data) {
+  var item = versItem(data.line);
+  item.quantity = data.quantity;   // la quantité réellement retirée
+  dataLayer.push({ ecommerce: null });
+  dataLayer.push({
+    event: "remove_from_cart",
+    ecommerce: {
+      currency: "EUR",
+      value: data.value,
+      items: [item]
+    }
+  });
+};
+
