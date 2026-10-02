@@ -135,3 +135,12 @@ shopHooks.purchase = function (data) {
     }
   });
 };
+
+/* 5. code suivi coupons */
+shopHooks.couponApplied = function (data) {
+  dataLayer.push({
+    event: "coupon_applied",
+    coupon_code: data.coupon,
+    coupon_valid: data.valid ? "oui" : "non"
+  });
+};
